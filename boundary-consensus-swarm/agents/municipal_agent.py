@@ -14,7 +14,7 @@ class MunicipalAgent(BaseAgent):
         # Deterministic mock logic extracting municipal data
         x = evidence_data.get("municipal_x", 0.0)
         y = evidence_data.get("municipal_y", 0.0)
-        confidence = evidence_data.get("municipal_confidence", 0.75)
+        confidence = evidence_data.get("municipal_confidence", 0.0)
         
         vertex = BoundaryVertex(x=x, y=y, id="vertex_municipal_01")
         

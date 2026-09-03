@@ -14,7 +14,7 @@ class DroneAgent(BaseAgent):
         # Deterministic mock logic extracting drone-specific data
         x = evidence_data.get("drone_x", 0.0)
         y = evidence_data.get("drone_y", 0.0)
-        confidence = evidence_data.get("drone_confidence", 0.9)
+        confidence = evidence_data.get("drone_confidence", 0.0)
         
         vertex = BoundaryVertex(x=x, y=y, id="vertex_drone_01")
         

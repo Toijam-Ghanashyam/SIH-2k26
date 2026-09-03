@@ -14,7 +14,7 @@ class RevenueAgent(BaseAgent):
         # Deterministic mock logic extracting cadastral data
         x = evidence_data.get("cadastral_x", 0.0)
         y = evidence_data.get("cadastral_y", 0.0)
-        confidence = evidence_data.get("cadastral_confidence", 0.8)
+        confidence = evidence_data.get("cadastral_confidence", 0.0)
         
         vertex = BoundaryVertex(x=x, y=y, id="vertex_revenue_01")
         
