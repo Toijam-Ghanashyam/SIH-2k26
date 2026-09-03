@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ZK-GeoProof | Spatial Evidence Ledger</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+
+<!-- ==============================
+     HEADER
+============================== -->
+
+<header class="header">
+
+    <div class="logo-area">
+
+        <div class="logo-icon">
+            🗺️
+        </div>
+
+        <div>
+
+            <h1>
+                ZK-GeoProof
+            </h1>
+
+            <p>
+                Spatial Evidence Ledger
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="audit-button"
+        onclick="openAuditHistory()">
+
+        📜 Audit History
+
+    </button>
+
+</header>
+
+
+
+<!-- ==============================
+     MAIN
+============================== -->
+
+<main class="main-container">
+
+
+    <section class="ledger-container">
+
+
+        <h2>
+            Spatial Evidence Ledger
+        </h2>
+
+
+
+        <!-- ==============================
+             DASHBOARD STATS
+        ============================== -->
+
+        <div class="dashboard-stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📦
+                </div>
+
+                <div>
+
+                    <h3 id="totalParcels">
+                        0
+                    </h3>
+
+                    <p>
+                        Total Parcels
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ✅
+                </div>
+
+                <div>
+
+                    <h3 id="approvedParcels">
+                        0
+                    </h3>
+
+                    <p>
+                        Approved
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⏳
+                </div>
+
+                <div>
+
+                    <h3 id="pendingParcels">
+                        0
+                    </h3>
+
+                    <p>
+                        Pending
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⚠️
+                </div>
+
+                <div>
+
+                    <h3 id="conflictParcels">
+                        0
+                    </h3>
+
+                    <p>
+                        Conflicts
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ❌
+                </div>
+
+                <div>
+
+                    <h3 id="rejectedParcels">
+                        0
+                    </h3>
+
+                    <p>
+                        Rejected
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🔐
+                </div>
+
+                <div>
+
+                    <h3 id="zkVerified">
+                        0
+                    </h3>
+
+                    <p>
+                        Commitments
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==============================
+             SEARCH + FILTER
+        ============================== -->
+
+        <div class="controls">
+
+
+            <div class="search-box">
+
+                <span>
+                    🔍
+                </span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search Parcel ID...">
+
+            </div>
+
+
+
+            <select id="statusFilter">
+
+                <option value="ALL">
+                    All Status
+                </option>
+
+                <option value="APPROVED">
+                    APPROVED
+                </option>
+
+                <option value="PENDING">
+                    PENDING
+                </option>
+
+                <option value="REJECTED">
+                    REJECTED
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+
+        <!-- ==============================
+             LEDGER CARDS
+        ============================== -->
+
+        <div id="ledgerContainer"></div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ==============================
+     PARCEL DETAILS MODAL
+============================== -->
+
+<div
+    id="detailsModal"
+    class="modal"
+    style="display: none;">
+
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <h2>
+                📋 Parcel Details
+            </h2>
+
+            <button
+                class="close-btn"
+                onclick="closeDetails()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+
+        <div
+            id="detailsContent"
+            class="details-content">
+
+        </div>
+
+
+
+        <div class="modal-footer">
+
+            <button
+                class="modal-close-button"
+                onclick="closeDetails()">
+
+                Close
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- ==============================
+     AUDIT HISTORY MODAL
+============================== -->
+
+<div
+    id="auditModal"
+    class="modal"
+    style="display: none;">
+
+
+    <div class="modal-content audit-modal-content">
+
+
+        <div class="modal-header">
+
+            <h2>
+                📜 Audit History
+            </h2>
+
+            <button
+                class="close-btn"
+                onclick="closeAuditHistory()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+
+        <div
+            id="auditContent"
+            class="audit-content">
+
+            <div class="audit-loading">
+                Loading audit history...
+            </div>
+
+        </div>
+
+
+
+        <div class="modal-footer">
+
+            <button
+                class="modal-close-button"
+                onclick="closeAuditHistory()">
+
+                Close
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- ==============================
+     JAVASCRIPT
+============================== -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
