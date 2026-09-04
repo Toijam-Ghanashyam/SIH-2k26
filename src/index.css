@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans text-slate-800 bg-slate-50 antialiased;
+  }
+}
+
+@layer utilities {
+  .nav-link {
+    @apply text-slate-200 hover:text-white transition-colors duration-200 text-sm font-medium;
+  }
+  .btn-primary {
+    @apply bg-accent-teal hover:bg-teal-700 text-white px-5 py-2 rounded shadow-md transition-colors duration-200 font-medium text-sm;
+  }
+  .btn-secondary {
+    @apply bg-transparent border border-white text-white hover:bg-white/10 px-5 py-2 rounded transition-colors duration-200 font-medium text-sm;
+  }
+}
+
+/* Sidebar mobile drawer animation */
+@keyframes slide-in {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+.animate-slide-in {
+  animation: slide-in 0.25s ease-out;
+}
+
+/* Toast notification animation */
+@keyframes toast-in {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+.animate-toast-in {
+  animation: toast-in 0.3s ease-out;
+}
+
+/* Leaflet tooltip override */
+.leaflet-tooltip-custom {
+  background: #0f2145;
+  color: #fff;
+  border: 1px solid #142d5e;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+}
+
