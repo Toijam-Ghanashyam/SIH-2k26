@@ -70,30 +70,50 @@ const LEGEND_ITEMS = [
   { label: 'GNSS/CORS', color: '#3b82f6', type: 'circle' },
 ];
 
-const Legend = () => (
-  <div className="absolute bottom-4 right-4 z-[1000] bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-slate-200 p-3">
-    <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Layer Legend</p>
-    <div className="space-y-1.5">
-      {LEGEND_ITEMS.map((item) => (
-        <div key={item.label} className="flex items-center gap-2 text-xs text-slate-600">
-          {item.type === 'fill' && (
-            <span className="w-4 h-3 rounded-sm border" style={{ backgroundColor: item.color + '60', borderColor: item.color }} />
-          )}
-          {item.type === 'dash' && (
-            <span className="w-4 h-0 border-t-2 border-dashed" style={{ borderColor: item.color }} />
-          )}
-          {item.type === 'line' && (
-            <span className="w-4 h-0 border-t-2" style={{ borderColor: item.color }} />
-          )}
-          {item.type === 'circle' && (
-            <span className="w-3 h-3 rounded-full border-2" style={{ borderColor: item.color, backgroundColor: item.color + '40' }} />
-          )}
-          {item.label}
+const Legend = () => {
+  const [mobileExpanded, setMobileExpanded] = React.useState(false);
+
+  return (
+    <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 z-[1000] flex flex-col items-end">
+      {/* Mobile toggle button */}
+      <button
+        onClick={() => setMobileExpanded((prev) => !prev)}
+        className="sm:hidden flex items-center gap-1.5 bg-white/95 backdrop-blur-sm px-2.5 py-1.5 rounded-md shadow-md border border-slate-200 text-xs font-semibold text-slate-700"
+      >
+        <span>Legend</span>
+        <span className="text-[10px] text-slate-400">{mobileExpanded ? '▲' : '▼'}</span>
+      </button>
+
+      {/* Legend content (always visible on sm+, toggleable on mobile) */}
+      <div
+        className={`${
+          mobileExpanded ? 'block mt-1.5' : 'hidden'
+        } sm:block bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-slate-200 p-2.5 sm:p-3 text-left`}
+      >
+        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Layer Legend</p>
+        <div className="space-y-1.5">
+          {LEGEND_ITEMS.map((item) => (
+            <div key={item.label} className="flex items-center gap-2 text-[11px] sm:text-xs text-slate-600">
+              {item.type === 'fill' && (
+                <span className="w-3.5 sm:w-4 h-2.5 sm:h-3 rounded-sm border shrink-0" style={{ backgroundColor: item.color + '60', borderColor: item.color }} />
+              )}
+              {item.type === 'dash' && (
+                <span className="w-3.5 sm:w-4 h-0 border-t-2 border-dashed shrink-0" style={{ borderColor: item.color }} />
+              )}
+              {item.type === 'line' && (
+                <span className="w-3.5 sm:w-4 h-0 border-t-2 shrink-0" style={{ borderColor: item.color }} />
+              )}
+              {item.type === 'circle' && (
+                <span className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full border-2 shrink-0" style={{ borderColor: item.color, backgroundColor: item.color + '40' }} />
+              )}
+              <span className="truncate">{item.label}</span>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 /* ── Main MapView component ────────────────────────────────────────── */
 

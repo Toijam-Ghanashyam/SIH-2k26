@@ -90,13 +90,18 @@ const Dashboard = () => {
       </div>
 
       {/* Mobile sidebar toggle */}
-      <div className="lg:hidden px-4 pt-3">
+      <div className="lg:hidden px-3 sm:px-4 pt-3">
         <button
           onClick={() => setSidebarOpen(true)}
-          className="flex items-center gap-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 px-3 py-2 rounded-md hover:bg-slate-50"
+          className="flex items-center justify-between w-full sm:w-auto gap-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-200 px-3.5 py-2 rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
         >
-          <Menu size={16} />
-          Map Layers
+          <div className="flex items-center gap-2">
+            <Menu size={16} className="text-teal-600" />
+            <span>Map Layers & Ingestion</span>
+          </div>
+          <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold border border-slate-200">
+            {Object.values(layers).filter(Boolean).length} Active
+          </span>
         </button>
       </div>
 
@@ -120,9 +125,9 @@ const Dashboard = () => {
         </LayerSidebar>
 
         {/* Main panel */}
-        <main className="flex-1 p-4 space-y-4 overflow-y-auto">
+        <main className="flex-1 p-2.5 sm:p-4 space-y-3 sm:space-y-4 overflow-y-auto w-full">
           {/* Map with tabs (2D / 3D / Temporal) */}
-          <div className="h-[500px] lg:h-[580px]">
+          <div className="h-[420px] sm:h-[500px] lg:h-[580px]">
             <MapTabs
               mapProps={{
                 layers,

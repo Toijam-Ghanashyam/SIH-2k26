@@ -41,7 +41,7 @@ const FeatureCards = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {features.map((feature, index) => (
-            <div key={index} className="bg-navy-800 border border-navy-700 p-8 rounded-xl hover:border-teal-500/50 transition-colors duration-300">
+            <div key={index} className="bg-navy-800 border border-navy-700 p-5 sm:p-8 rounded-xl hover:border-teal-500/50 transition-colors duration-300">
               <div className="flex items-center mb-6">
                 <div className="w-12 h-12 rounded-lg bg-navy-900 flex items-center justify-center border border-navy-700 mr-4">
                   {feature.icon}

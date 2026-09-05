@@ -83,27 +83,29 @@ const PlotInspectionPanel = ({ selectedPlotId }) => {
   return (
     <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
       {/* Header */}
-      <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-slate-700">
+      <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h3 className="text-xs sm:text-sm font-semibold text-slate-700">
           📋 Plot Inspection — {selectedPlotId}
         </h3>
         <button
           onClick={handleDownloadNotice}
           disabled={downloading}
-          className="flex items-center gap-1.5 text-xs font-medium text-amber-700 bg-amber-100 hover:bg-amber-200 disabled:opacity-75 px-3 py-1.5 rounded-md transition-colors"
+          className="flex items-center justify-center gap-1.5 text-xs font-medium text-amber-700 bg-amber-100 hover:bg-amber-200 disabled:opacity-75 px-3 py-1.5 rounded-md transition-colors w-full sm:w-auto"
         >
-          <FileDown size={14} className={downloading ? 'animate-bounce' : ''} />
-          {downloading
-            ? 'Generating Notice…'
-            : downloaded
-            ? 'Notice Ready (Simulated)'
-            : 'Download Official Inspection Notice (PDF)'}
+          <FileDown size={14} className={downloading ? 'animate-bounce shrink-0' : 'shrink-0'} />
+          <span>
+            {downloading
+              ? 'Generating Notice…'
+              : downloaded
+              ? 'Notice Ready (Simulated)'
+              : <>Download <span className="hidden sm:inline">Official Inspection </span>Notice (PDF)</>}
+          </span>
         </button>
       </div>
 
-      <div className="p-4 space-y-4">
+      <div className="p-3 sm:p-4 space-y-3 sm:space-y-4">
         {/* Row 1: Owner, Tax Status, Tax ID */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
           <StatCell icon={User} label="Legal Owner" value={record.owner_name} />
           <StatCell
             icon={Receipt}
@@ -121,7 +123,7 @@ const PlotInspectionPanel = ({ selectedPlotId }) => {
         </div>
 
         {/* Row 2: Registered Area, GIS Area, Discrepancy */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
           <StatCell icon={Ruler} label="Registered Area" value={`${record.registered_area_sqm} m²`} />
           <StatCell icon={Ruler} label="GIS Surveyed Area" value={`${record.gis_area_sqm} m²`} />
           <StatCell

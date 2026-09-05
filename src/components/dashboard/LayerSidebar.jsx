@@ -40,10 +40,10 @@ const LayerSidebar = ({ layers, onToggle, isOpen, onClose, children }) => {
       <div className="flex items-center justify-between p-4 border-b border-slate-200 lg:hidden">
         <div className="flex items-center gap-2">
           <Layers size={18} className="text-teal-600" />
-          <span className="font-semibold text-slate-700">Layers</span>
+          <span className="font-semibold text-slate-700">Layers & Ingestion</span>
         </div>
-        <button onClick={onClose} className="p-1 rounded hover:bg-slate-100">
-          <X size={18} className="text-slate-500" />
+        <button onClick={onClose} className="p-2 -mr-1 rounded-md hover:bg-slate-100 text-slate-500 hover:text-slate-700" aria-label="Close sidebar">
+          <X size={20} />
         </button>
       </div>
 
@@ -106,7 +106,7 @@ const LayerSidebar = ({ layers, onToggle, isOpen, onClose, children }) => {
             onClick={onClose}
           />
           {/* Drawer panel */}
-          <aside className="absolute left-0 top-0 h-full w-72 bg-white shadow-xl animate-slide-in">
+          <aside className="absolute left-0 top-0 h-full w-[82vw] sm:w-72 max-w-xs bg-white shadow-xl animate-slide-in">
             {sidebarContent}
           </aside>
         </div>

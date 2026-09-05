@@ -57,9 +57,9 @@ const ElevationView = () => {
   return (
     <div className="w-full h-full min-h-[400px] relative rounded-b-lg overflow-hidden bg-slate-900">
       {/* Caption */}
-      <div className="absolute top-3 left-3 z-10 bg-navy-900/80 backdrop-blur-sm rounded-md px-3 py-2 border border-navy-700">
-        <p className="text-[11px] text-slate-300">
-          Interactive 3D building heights — drag to rotate, scroll to zoom.
+      <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 z-10 bg-navy-900/80 backdrop-blur-sm rounded-md px-2.5 sm:px-3 py-1.5 sm:py-2 border border-navy-700 max-w-[85vw] sm:max-w-none">
+        <p className="text-[10px] sm:text-[11px] text-slate-300 leading-tight">
+          Interactive 3D heights — drag to rotate, scroll/pinch to zoom.
         </p>
       </div>
 

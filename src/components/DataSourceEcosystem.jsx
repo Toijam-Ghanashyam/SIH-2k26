@@ -26,7 +26,14 @@ const DataSourceEcosystem = () => {
         </div>
 
         <div className="relative">
-          {/* Central Hub */}
+          {/* Mobile Central Hub (< lg) */}
+          <div className="lg:hidden mb-6 bg-navy-900 text-white p-5 rounded-xl shadow-lg border-2 border-teal-500 text-center max-w-sm mx-auto">
+            <ShieldCheck className="mx-auto mb-2 text-teal-400" size={36} />
+            <h3 className="font-bold text-base text-white">AI Integration Engine</h3>
+            <p className="text-xs text-slate-300 mt-1">Spatial Matching & Conflict Detection</p>
+          </div>
+
+          {/* Central Hub (Desktop only) */}
           <div className="hidden lg:flex absolute inset-0 items-center justify-center pointer-events-none z-10">
              <div className="bg-navy-900 text-white p-6 rounded-xl shadow-2xl border-2 border-teal-500 w-64 text-center">
                 <ShieldCheck className="mx-auto mb-2 text-teal-400" size={40} />
@@ -35,18 +42,18 @@ const DataSourceEcosystem = () => {
              </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-y-24 relative z-0">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-y-24 relative z-0">
             {sources.map((source, index) => (
               <div 
                 key={index} 
-                className={`bg-white p-4 rounded border ${source.naksha ? 'border-teal-200 shadow-sm' : 'border-slate-200'} flex flex-col justify-center text-center h-28 relative`}
+                className={`bg-white p-3 sm:p-4 rounded border ${source.naksha ? 'border-teal-200 shadow-sm' : 'border-slate-200'} flex flex-col justify-center text-center h-24 sm:h-28 relative`}
               >
                 {source.naksha && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-teal-200">
+                  <div className="absolute -top-2.5 sm:-top-3 left-1/2 transform -translate-x-1/2 bg-teal-100 text-teal-800 text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded uppercase tracking-wider border border-teal-200 whitespace-nowrap">
                     NAKSHA Source
                   </div>
                 )}
-                <span className="font-medium text-navy-800 text-sm">{source.name}</span>
+                <span className="font-medium text-navy-800 text-xs sm:text-sm leading-snug">{source.name}</span>
               </div>
             ))}
           </div>

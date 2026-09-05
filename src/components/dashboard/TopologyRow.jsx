@@ -14,29 +14,29 @@ const TopologyRow = ({ plotsCount, repaired, snapped }) => {
   ];
 
   return (
-    <section className="px-4 sm:px-6 pb-4">
-      <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">
+    <section className="px-3 sm:px-6 pb-3 sm:pb-4">
+      <h2 className="text-xs sm:text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1.5 sm:mb-3">
         🛠️ Automated Topology Diagnostics & Health
       </h2>
-      <p className="text-xs text-slate-400 mb-3">
+      <p className="text-[11px] sm:text-xs text-slate-400 mb-2.5 sm:mb-3">
         Real-time auto-correction metrics for ingested spatial data prior to conflict analysis.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 sm:gap-3">
         {cards.map((card) => {
           const Icon = card.icon;
           return (
             <div
               key={card.label}
-              className="rounded-md border border-slate-200 bg-slate-50 p-3 hover:bg-white transition-colors duration-200"
+              className="rounded-md border border-slate-200 bg-slate-50 p-2 sm:p-3 hover:bg-white transition-colors duration-200"
             >
-              <div className="flex items-center gap-2 mb-1.5">
-                <Icon size={14} className="text-slate-400" />
-                <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wide leading-tight">
+              <div className="flex items-center gap-1.5 mb-1 sm:mb-1.5">
+                <Icon size={13} className="text-slate-400 shrink-0" />
+                <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 uppercase tracking-wide leading-tight truncate">
                   {card.label}
                 </span>
               </div>
-              <p className="text-xl font-bold text-slate-700">{card.value}</p>
-              <span className="text-[11px] text-slate-400">{card.sub}</span>
+              <p className="text-base sm:text-xl font-bold text-slate-700">{card.value}</p>
+              <span className="text-[10px] sm:text-[11px] text-slate-400">{card.sub}</span>
             </div>
           );
         })}

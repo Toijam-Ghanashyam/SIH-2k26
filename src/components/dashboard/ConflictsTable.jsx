@@ -56,14 +56,17 @@ const ConflictsTable = ({ onRowClick, selectedPlotId }) => {
 
   return (
     <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
-      <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
-        <h3 className="text-sm font-semibold text-slate-700">
+      <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+        <h3 className="text-xs sm:text-sm font-semibold text-slate-700">
           🚨 Flagged Spatial Conflicts ({conflicts.length})
         </h3>
+        <span className="text-[10px] sm:hidden text-slate-400 font-medium">
+          Swipe horizontally →
+        </span>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full text-xs sm:text-sm">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50/50">
               {[
@@ -75,7 +78,7 @@ const ConflictsTable = ({ onRowClick, selectedPlotId }) => {
               ].map((col) => (
                 <th
                   key={col.key}
-                  className="px-4 py-2.5 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700 select-none"
+                  className="px-3 sm:px-4 py-2 sm:py-2.5 text-left text-[10px] sm:text-[11px] font-semibold text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700 select-none whitespace-nowrap"
                   onClick={() => handleSort(col.key)}
                 >
                   <div className="flex items-center gap-1">
@@ -100,19 +103,19 @@ const ConflictsTable = ({ onRowClick, selectedPlotId }) => {
                       : 'hover:bg-slate-50'
                   }`}
                 >
-                  <td className="px-4 py-2.5 font-mono text-xs font-medium text-slate-700">
+                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 font-mono text-[11px] sm:text-xs font-medium text-slate-700 whitespace-nowrap">
                     {c.plot_id}
                   </td>
-                  <td className="px-4 py-2.5 text-slate-600">{c.conflict_type}</td>
-                  <td className="px-4 py-2.5 font-medium text-slate-700">{c.iou}%</td>
-                  <td className="px-4 py-2.5">
-                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ${badge.bg} ${badge.fg}`}>
+                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 text-slate-600 whitespace-nowrap">{c.conflict_type}</td>
+                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 font-medium text-slate-700 whitespace-nowrap">{c.iou}%</td>
+                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 whitespace-nowrap">
+                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium ${badge.bg} ${badge.fg}`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${badge.dot}`} />
                       {c.confidence_score}% — {badge.text}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5">
-                    <span className={`text-xs font-medium ${
+                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 whitespace-nowrap">
+                    <span className={`text-[11px] sm:text-xs font-medium ${
                       c.status === 'Confirmed' ? 'text-emerald-600' :
                       c.status === 'Needs Review' ? 'text-amber-600' :
                       'text-red-600'

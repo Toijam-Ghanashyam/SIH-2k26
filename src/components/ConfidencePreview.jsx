@@ -55,13 +55,13 @@ const ConfidencePreview = () => {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
-              <h3 className="font-semibold text-navy-800">Recent Parcel Integrations</h3>
-              <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Live View</span>
+          <div className="bg-white p-4 sm:p-6 rounded-xl border border-slate-200 shadow-sm">
+            <div className="flex justify-between items-center mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-slate-100">
+              <h3 className="font-semibold text-sm sm:text-base text-navy-800">Recent Parcel Integrations</h3>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 uppercase tracking-wider">Live View</span>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {parcels.map((parcel, index) => (
                 <div key={index} className={`p-4 rounded-lg border ${parcel.border} ${parcel.bg} flex justify-between items-start`}>
                   <div>

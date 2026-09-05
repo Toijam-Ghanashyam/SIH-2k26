@@ -67,18 +67,18 @@ const TemporalCompareView = () => {
   return (
     <div className="w-full h-full min-h-[400px] flex flex-col rounded-b-lg overflow-hidden bg-slate-100">
       {/* Controls */}
-      <div className="flex items-center justify-between px-3 py-2 bg-white border-b border-slate-200">
-        <p className="text-[11px] text-slate-500">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 px-3 py-2 bg-white border-b border-slate-200">
+        <p className="text-[11px] text-slate-500 leading-tight">
           Drag the slider to compare a historical baseline against the latest survey and spot changes.
         </p>
-        <label className="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer flex-shrink-0 ml-3" title="Note: This may reduce performance with large datasets.">
+        <label className="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer flex-shrink-0 sm:ml-3" title="Note: This may reduce performance with large datasets.">
           <input
             type="checkbox"
             checked={showOverlay}
             onChange={(e) => setShowOverlay(e.target.checked)}
             className="rounded border-slate-300 text-teal-600 focus:ring-teal-500 w-3.5 h-3.5"
           />
-          Overlay Vector Boundaries
+          <span>Overlay <span className="hidden sm:inline">Vector </span>Boundaries</span>
         </label>
       </div>
 

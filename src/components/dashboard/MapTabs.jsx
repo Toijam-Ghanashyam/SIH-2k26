@@ -16,9 +16,9 @@ import ElevationView from './ElevationView';
 import TemporalCompareView from './TemporalCompareView';
 
 const TABS = [
-  { id: '2d', label: '2D GIS Integration View', icon: Map },
-  { id: '3d', label: '3D Elevation Inspector (DSM)', icon: Cuboid },
-  { id: 'temporal', label: 'Temporal Change Detection', icon: Clock },
+  { id: '2d', label: '2D GIS Integration View', shortLabel: '2D View', icon: Map },
+  { id: '3d', label: '3D Elevation Inspector (DSM)', shortLabel: '3D Elevation', icon: Cuboid },
+  { id: 'temporal', label: 'Temporal Change Detection', shortLabel: 'Temporal Change', icon: Clock },
 ];
 
 const MapTabs = ({ mapProps }) => {
@@ -27,7 +27,7 @@ const MapTabs = ({ mapProps }) => {
   return (
     <div className="flex flex-col h-full">
       {/* Tab bar */}
-      <div className="flex border-b border-slate-200 bg-white rounded-t-lg overflow-x-auto">
+      <div className="flex border-b border-slate-200 bg-white rounded-t-lg overflow-x-auto scrollbar-none">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -35,14 +35,17 @@ const MapTabs = ({ mapProps }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium whitespace-nowrap border-b-2 transition-all ${
+              className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-medium whitespace-nowrap border-b-2 transition-all flex-1 sm:flex-initial justify-center ${
                 isActive
                   ? 'border-teal-500 text-teal-700 bg-teal-50/50'
                   : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'
               }`}
             >
-              <Icon size={14} />
-              {tab.label}
+              <Icon size={14} className="shrink-0" />
+              <span>
+                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.shortLabel}</span>
+              </span>
             </button>
           );
         })}

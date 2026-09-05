@@ -20,9 +20,9 @@ const Toast = ({ message, type = 'success', onClose, duration = 4000 }) => {
   const isSuccess = type === 'success';
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] animate-toast-in">
+    <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 z-[9999] animate-toast-in">
       <div
-        className={`flex items-start gap-3 px-4 py-3 rounded-lg shadow-xl border max-w-sm ${
+        className={`flex items-start gap-3 px-4 py-3 rounded-lg shadow-xl border max-w-full sm:max-w-sm mx-auto ${
           isSuccess
             ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
             : 'bg-red-50 border-red-200 text-red-800'
