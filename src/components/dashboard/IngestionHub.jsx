@@ -82,13 +82,13 @@ const IngestionHub = ({ onIngestSuccess }) => {
       </div>
 
       {/* Mode toggle (segmented control) */}
-      <div className="flex rounded-md border border-slate-200 overflow-hidden">
+      <div className="flex rounded-md border border-slate-200 dark:border-slate-700 overflow-hidden">
         <button
           onClick={() => { setMode('batch'); setFile(null); }}
           className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2 text-xs font-medium transition-colors ${
             mode === 'batch'
-              ? 'bg-navy-800 text-white'
-              : 'bg-white text-slate-600 hover:bg-slate-50'
+              ? 'bg-navy-800 dark:bg-teal-600 text-white'
+              : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
           }`}
         >
           <Package size={12} />
@@ -98,8 +98,8 @@ const IngestionHub = ({ onIngestSuccess }) => {
           onClick={() => { setMode('individual'); setFile(null); }}
           className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2 text-xs font-medium transition-colors ${
             mode === 'individual'
-              ? 'bg-navy-800 text-white'
-              : 'bg-white text-slate-600 hover:bg-slate-50'
+              ? 'bg-navy-800 dark:bg-teal-600 text-white'
+              : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
           }`}
         >
           <FileText size={12} />
@@ -119,7 +119,7 @@ const IngestionHub = ({ onIngestSuccess }) => {
         <select
           value={selectedLayer}
           onChange={(e) => { setSelectedLayer(e.target.value); setFile(null); }}
-          className="w-full text-xs border border-slate-200 rounded-md px-2 py-2 text-slate-700 bg-white focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
+          className="w-full text-xs border border-slate-200 dark:border-slate-700 rounded-md px-2 py-2 text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
         >
           {LAYER_TYPES.map((lt) => (
             <option key={lt.label} value={lt.label}>{lt.label}</option>
@@ -133,13 +133,13 @@ const IngestionHub = ({ onIngestSuccess }) => {
           type="file"
           accept={acceptedTypes}
           onChange={handleFileChange}
-          className="w-full text-xs border border-dashed border-slate-300 rounded-md p-2 text-slate-600 bg-slate-50 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-teal-600 file:text-white file:cursor-pointer hover:border-teal-400 transition-colors"
+          className="w-full text-xs border border-dashed border-slate-300 dark:border-slate-700 rounded-md p-2 text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-teal-600 file:text-white file:cursor-pointer hover:border-teal-400 transition-colors"
         />
       </div>
 
       {/* File name display */}
       {file && (
-        <p className="text-[11px] text-teal-600 font-medium truncate">
+        <p className="text-[11px] text-teal-600 dark:text-teal-400 font-medium truncate">
           📁 {file.name}
         </p>
       )}
@@ -148,7 +148,7 @@ const IngestionHub = ({ onIngestSuccess }) => {
       <button
         onClick={handleIngest}
         disabled={!file || loading}
-        className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-navy-900 font-semibold text-xs px-3 py-2.5 rounded-md shadow-sm transition-all"
+        className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 disabled:bg-slate-200 dark:disabled:bg-slate-800 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:cursor-not-allowed text-navy-900 font-semibold text-xs px-3 py-2.5 rounded-md shadow-sm transition-all"
       >
         {loading ? (
           <>
@@ -164,13 +164,13 @@ const IngestionHub = ({ onIngestSuccess }) => {
       </button>
 
       {/* Divider */}
-      <hr className="border-slate-200" />
+      <hr className="border-slate-200 dark:border-slate-800" />
 
       {/* Run Spatial Conflict Engine (standalone) */}
       <button
         onClick={handleRunEngine}
         disabled={engineLoading}
-        className="w-full flex items-center justify-center gap-2 bg-navy-800 hover:bg-navy-700 disabled:bg-navy-800/60 disabled:cursor-not-allowed text-white font-semibold text-xs px-3 py-2.5 rounded-md shadow-sm transition-all"
+        className="w-full flex items-center justify-center gap-2 bg-navy-800 hover:bg-navy-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:border dark:border-slate-700 disabled:bg-navy-800/60 dark:disabled:bg-slate-800/60 disabled:cursor-not-allowed text-white font-semibold text-xs px-3 py-2.5 rounded-md shadow-sm transition-all"
       >
         {engineLoading ? (
           <>

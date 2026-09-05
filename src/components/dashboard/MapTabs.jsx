@@ -27,7 +27,7 @@ const MapTabs = ({ mapProps }) => {
   return (
     <div className="flex flex-col h-full">
       {/* Tab bar */}
-      <div className="flex border-b border-slate-200 bg-white rounded-t-lg overflow-x-auto scrollbar-none">
+      <div className="flex border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-t-lg overflow-x-auto scrollbar-none transition-colors">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -37,8 +37,8 @@ const MapTabs = ({ mapProps }) => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-medium whitespace-nowrap border-b-2 transition-all flex-1 sm:flex-initial justify-center ${
                 isActive
-                  ? 'border-teal-500 text-teal-700 bg-teal-50/50'
-                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                  ? 'border-teal-500 text-teal-700 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-950/40'
+                  : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60'
               }`}
             >
               <Icon size={14} className="shrink-0" />

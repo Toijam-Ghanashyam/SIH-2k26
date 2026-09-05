@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
 
 /* ── Landing Page Components ─────────────────────────────────────── */
 import UtilityBar from './components/UtilityBar';
@@ -22,7 +23,7 @@ import Dashboard from './pages/Dashboard';
  */
 function LandingPage() {
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 transition-colors duration-200">
       <UtilityBar />
       <Navbar />
       
@@ -48,12 +49,14 @@ function LandingPage() {
  */
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

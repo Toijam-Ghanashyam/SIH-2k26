@@ -30,7 +30,7 @@ const FeatureCards = () => {
   ];
 
   return (
-    <section id="features" className="py-20 bg-navy-900 text-white">
+    <section id="features" className="py-20 bg-navy-900 dark:bg-slate-950 text-white transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl font-bold mb-4">Core Capabilities</h2>
@@ -41,24 +41,24 @@ const FeatureCards = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {features.map((feature, index) => (
-            <div key={index} className="bg-navy-800 border border-navy-700 p-5 sm:p-8 rounded-xl hover:border-teal-500/50 transition-colors duration-300">
+            <div key={index} className="bg-navy-800 dark:bg-slate-900 border border-navy-700 dark:border-slate-800 p-5 sm:p-8 rounded-xl hover:border-teal-500/50 transition-colors duration-300">
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 rounded-lg bg-navy-900 flex items-center justify-center border border-navy-700 mr-4">
+                <div className="w-12 h-12 rounded-lg bg-navy-900 dark:bg-slate-950 flex items-center justify-center border border-navy-700 dark:border-slate-800 mr-4">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold">{feature.title}</h3>
+                <h3 className="text-xl font-semibold text-white">{feature.title}</h3>
               </div>
               
               <div className="space-y-4">
                 <div>
                   <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1 block">What today misses</span>
-                  <p className="text-slate-300 text-sm bg-navy-900/50 p-3 rounded border border-navy-700/50">
+                  <p className="text-slate-300 text-sm bg-navy-900/50 dark:bg-slate-950/60 p-3 rounded border border-navy-700/50 dark:border-slate-800">
                     {feature.today}
                   </p>
                 </div>
                 <div>
                   <span className="text-xs uppercase tracking-wider text-teal-500 font-semibold mb-1 block">What this adds</span>
-                  <p className="text-slate-100 text-sm bg-teal-900/20 p-3 rounded border border-teal-800/30">
+                  <p className="text-slate-100 text-sm bg-teal-900/20 dark:bg-teal-950/40 p-3 rounded border border-teal-800/30 dark:border-teal-700/40">
                     {feature.adds}
                   </p>
                 </div>

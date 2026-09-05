@@ -35,14 +35,14 @@ const LAYER_GROUPS = [
 
 const LayerSidebar = ({ layers, onToggle, isOpen, onClose, children }) => {
   const sidebarContent = (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors">
       {/* Header — visible on mobile drawer only */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-200 lg:hidden">
+      <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 lg:hidden">
         <div className="flex items-center gap-2">
-          <Layers size={18} className="text-teal-600" />
-          <span className="font-semibold text-slate-700">Layers & Ingestion</span>
+          <Layers size={18} className="text-teal-600 dark:text-teal-400" />
+          <span className="font-semibold text-slate-700 dark:text-slate-200">Layers & Ingestion</span>
         </div>
-        <button onClick={onClose} className="p-2 -mr-1 rounded-md hover:bg-slate-100 text-slate-500 hover:text-slate-700" aria-label="Close sidebar">
+        <button onClick={onClose} className="p-2 -mr-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200" aria-label="Close sidebar">
           <X size={20} />
         </button>
       </div>
@@ -51,7 +51,7 @@ const LayerSidebar = ({ layers, onToggle, isOpen, onClose, children }) => {
       <div className="flex-1 overflow-y-auto p-4 space-y-5">
         {LAYER_GROUPS.map((group) => (
           <div key={group.title}>
-            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <h3 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
               <Map size={12} />
               {group.title}
             </h3>
@@ -59,17 +59,17 @@ const LayerSidebar = ({ layers, onToggle, isOpen, onClose, children }) => {
               {group.items.map((item) => (
                 <label
                   key={item.key}
-                  className="flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer hover:bg-slate-100 transition-colors text-sm text-slate-700"
+                  className="flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-colors text-sm text-slate-700 dark:text-slate-200"
                 >
                   <input
                     type="checkbox"
                     checked={layers[item.key]}
                     onChange={() => onToggle(item.key)}
-                    className="rounded border-slate-300 text-teal-600 focus:ring-teal-500 w-4 h-4"
+                    className="rounded border-slate-300 dark:border-slate-600 dark:bg-slate-800 text-teal-600 focus:ring-teal-500 w-4 h-4"
                   />
                   {/* Color swatch */}
                   <span
-                    className="w-3 h-3 rounded-sm border border-slate-300 flex-shrink-0"
+                    className="w-3 h-3 rounded-sm border border-slate-300 dark:border-slate-600 flex-shrink-0"
                     style={{ backgroundColor: item.color }}
                   />
                   {item.label}
@@ -82,7 +82,7 @@ const LayerSidebar = ({ layers, onToggle, isOpen, onClose, children }) => {
         {/* Divider + children slot (for IngestionHub in Phase 2) */}
         {children && (
           <>
-            <hr className="border-slate-200" />
+            <hr className="border-slate-200 dark:border-slate-800" />
             {children}
           </>
         )}
@@ -93,7 +93,7 @@ const LayerSidebar = ({ layers, onToggle, isOpen, onClose, children }) => {
   return (
     <>
       {/* Desktop sidebar — always visible */}
-      <aside className="hidden lg:block w-64 flex-shrink-0 bg-white border-r border-slate-200 overflow-hidden">
+      <aside className="hidden lg:block w-64 flex-shrink-0 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 overflow-hidden transition-colors duration-200">
         {sidebarContent}
       </aside>
 
@@ -102,11 +102,11 @@ const LayerSidebar = ({ layers, onToggle, isOpen, onClose, children }) => {
         <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={onClose}
           />
           {/* Drawer panel */}
-          <aside className="absolute left-0 top-0 h-full w-[82vw] sm:w-72 max-w-xs bg-white shadow-xl animate-slide-in">
+          <aside className="absolute left-0 top-0 h-full w-[82vw] sm:w-72 max-w-xs bg-white dark:bg-slate-900 shadow-xl animate-slide-in border-r border-slate-200 dark:border-slate-800">
             {sidebarContent}
           </aside>
         </div>

@@ -13,9 +13,9 @@ import { conflictsGeoJSON } from '../../data/mockData';
 
 /* ── Confidence badge color logic ──────────────────────────────────── */
 const getConfidenceBadge = (score) => {
-  if (score >= 85) return { text: 'High', bg: 'bg-emerald-100', fg: 'text-emerald-700', dot: 'bg-emerald-500' };
-  if (score >= 60) return { text: 'Medium', bg: 'bg-amber-100', fg: 'text-amber-700', dot: 'bg-amber-500' };
-  return { text: 'Low', bg: 'bg-red-100', fg: 'text-red-700', dot: 'bg-red-500' };
+  if (score >= 85) return { text: 'High', bg: 'bg-emerald-100 dark:bg-emerald-950/60', fg: 'text-emerald-700 dark:text-emerald-300', dot: 'bg-emerald-500' };
+  if (score >= 60) return { text: 'Medium', bg: 'bg-amber-100 dark:bg-amber-950/60', fg: 'text-amber-700 dark:text-amber-300', dot: 'bg-amber-500' };
+  return { text: 'Low', bg: 'bg-red-100 dark:bg-red-950/60', fg: 'text-red-700 dark:text-red-300', dot: 'bg-red-500' };
 };
 
 const SORT_KEYS = ['plot_id', 'conflict_type', 'iou', 'confidence_score', 'status'];
@@ -48,19 +48,19 @@ const ConflictsTable = ({ onRowClick, selectedPlotId }) => {
   };
 
   const SortIcon = ({ colKey }) => {
-    if (sortKey !== colKey) return <ArrowUpDown size={12} className="text-slate-300" />;
+    if (sortKey !== colKey) return <ArrowUpDown size={12} className="text-slate-300 dark:text-slate-600" />;
     return sortDir === 'asc'
       ? <ArrowUp size={12} className="text-teal-500" />
       : <ArrowDown size={12} className="text-teal-500" />;
   };
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
-      <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-        <h3 className="text-xs sm:text-sm font-semibold text-slate-700">
+    <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+      <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <h3 className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200">
           🚨 Flagged Spatial Conflicts ({conflicts.length})
         </h3>
-        <span className="text-[10px] sm:hidden text-slate-400 font-medium">
+        <span className="text-[10px] sm:hidden text-slate-400 dark:text-slate-500 font-medium">
           Swipe horizontally →
         </span>
       </div>
@@ -68,7 +68,7 @@ const ConflictsTable = ({ onRowClick, selectedPlotId }) => {
       <div className="overflow-x-auto">
         <table className="w-full text-xs sm:text-sm">
           <thead>
-            <tr className="border-b border-slate-200 bg-slate-50/50">
+            <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40">
               {[
                 { key: 'plot_id', label: 'Plot ID' },
                 { key: 'conflict_type', label: 'Conflict Type' },
@@ -78,7 +78,7 @@ const ConflictsTable = ({ onRowClick, selectedPlotId }) => {
               ].map((col) => (
                 <th
                   key={col.key}
-                  className="px-3 sm:px-4 py-2 sm:py-2.5 text-left text-[10px] sm:text-[11px] font-semibold text-slate-500 uppercase tracking-wider cursor-pointer hover:text-slate-700 select-none whitespace-nowrap"
+                  className="px-3 sm:px-4 py-2 sm:py-2.5 text-left text-[10px] sm:text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:text-slate-700 dark:hover:text-slate-200 select-none whitespace-nowrap"
                   onClick={() => handleSort(col.key)}
                 >
                   <div className="flex items-center gap-1">
@@ -89,7 +89,7 @@ const ConflictsTable = ({ onRowClick, selectedPlotId }) => {
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
             {conflicts.map((c) => {
               const badge = getConfidenceBadge(c.confidence_score);
               const isSelected = c.plot_id === selectedPlotId;
@@ -99,15 +99,15 @@ const ConflictsTable = ({ onRowClick, selectedPlotId }) => {
                   onClick={() => onRowClick(c.plot_id)}
                   className={`cursor-pointer transition-colors ${
                     isSelected
-                      ? 'bg-blue-50 hover:bg-blue-100'
-                      : 'hover:bg-slate-50'
+                      ? 'bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-950/60'
+                      : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
                   }`}
                 >
-                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 font-mono text-[11px] sm:text-xs font-medium text-slate-700 whitespace-nowrap">
+                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 font-mono text-[11px] sm:text-xs font-medium text-slate-700 dark:text-slate-200 whitespace-nowrap">
                     {c.plot_id}
                   </td>
-                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 text-slate-600 whitespace-nowrap">{c.conflict_type}</td>
-                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 font-medium text-slate-700 whitespace-nowrap">{c.iou}%</td>
+                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 text-slate-600 dark:text-slate-300 whitespace-nowrap">{c.conflict_type}</td>
+                  <td className="px-3 sm:px-4 py-2 sm:py-2.5 font-medium text-slate-700 dark:text-slate-200 whitespace-nowrap">{c.iou}%</td>
                   <td className="px-3 sm:px-4 py-2 sm:py-2.5 whitespace-nowrap">
                     <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] sm:text-xs font-medium ${badge.bg} ${badge.fg}`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${badge.dot}`} />
@@ -116,9 +116,9 @@ const ConflictsTable = ({ onRowClick, selectedPlotId }) => {
                   </td>
                   <td className="px-3 sm:px-4 py-2 sm:py-2.5 whitespace-nowrap">
                     <span className={`text-[11px] sm:text-xs font-medium ${
-                      c.status === 'Confirmed' ? 'text-emerald-600' :
-                      c.status === 'Needs Review' ? 'text-amber-600' :
-                      'text-red-600'
+                      c.status === 'Confirmed' ? 'text-emerald-600 dark:text-emerald-400' :
+                      c.status === 'Needs Review' ? 'text-amber-600 dark:text-amber-400' :
+                      'text-red-600 dark:text-red-400'
                     }`}>
                       {c.status}
                     </span>

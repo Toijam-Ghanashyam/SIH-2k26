@@ -14,24 +14,26 @@ import { revenueRecords, conflictsGeoJSON } from '../../data/mockData';
 const ConfidenceBar = ({ label, value, threshold = 85 }) => {
   const isHigh = value >= threshold;
   const barColor = isHigh ? 'bg-emerald-500' : 'bg-amber-500';
-  const badgeColor = isHigh ? 'text-emerald-700 bg-emerald-100' : 'text-amber-700 bg-amber-100';
+  const badgeColor = isHigh
+    ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60'
+    : 'text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/60';
   const badgeText = isHigh ? 'High Certainty' : 'Needs Human Review';
 
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between">
-        <span className="text-xs text-slate-500">{label}</span>
+        <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
         <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${badgeColor}`}>
           {badgeText}
         </span>
       </div>
-      <div className="w-full bg-slate-200 rounded-full h-2.5">
+      <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
         <div
           className={`h-2.5 rounded-full transition-all duration-500 ${barColor}`}
           style={{ width: `${Math.min(value, 100)}%` }}
         />
       </div>
-      <span className="text-xs font-medium text-slate-600">{value.toFixed(1)}%</span>
+      <span className="text-xs font-medium text-slate-600 dark:text-slate-300">{value.toFixed(1)}%</span>
     </div>
   );
 };
@@ -52,9 +54,9 @@ const PlotInspectionPanel = ({ selectedPlotId }) => {
   /* Empty state */
   if (!selectedPlotId) {
     return (
-      <div className="bg-white rounded-lg border border-slate-200 p-6 text-center">
-        <p className="text-sm text-slate-500 font-medium">No parcel selected</p>
-        <p className="text-xs text-slate-400 mt-1">
+      <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 text-center transition-colors">
+        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">No parcel selected</p>
+        <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
           Click any cadastral plot on the map or a row in the conflicts table to inspect attributes.
         </p>
       </div>
@@ -71,8 +73,8 @@ const PlotInspectionPanel = ({ selectedPlotId }) => {
 
   if (!record) {
     return (
-      <div className="bg-white rounded-lg border border-slate-200 p-6 text-center">
-        <p className="text-sm text-slate-400">No revenue record found for {selectedPlotId}.</p>
+      <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 text-center transition-colors">
+        <p className="text-sm text-slate-400 dark:text-slate-500">No revenue record found for {selectedPlotId}.</p>
       </div>
     );
   }
@@ -81,16 +83,16 @@ const PlotInspectionPanel = ({ selectedPlotId }) => {
   const isLargeDiscrepancy = discrepancy > 10;
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
+    <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
       {/* Header */}
-      <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <h3 className="text-xs sm:text-sm font-semibold text-slate-700">
+      <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h3 className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200">
           📋 Plot Inspection — {selectedPlotId}
         </h3>
         <button
           onClick={handleDownloadNotice}
           disabled={downloading}
-          className="flex items-center justify-center gap-1.5 text-xs font-medium text-amber-700 bg-amber-100 hover:bg-amber-200 disabled:opacity-75 px-3 py-1.5 rounded-md transition-colors w-full sm:w-auto"
+          className="flex items-center justify-center gap-1.5 text-xs font-medium text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 hover:bg-amber-200 dark:hover:bg-amber-900/60 border border-amber-200 dark:border-amber-800/60 disabled:opacity-75 px-3 py-1.5 rounded-md transition-colors w-full sm:w-auto"
         >
           <FileDown size={14} className={downloading ? 'animate-bounce shrink-0' : 'shrink-0'} />
           <span>
@@ -113,10 +115,10 @@ const PlotInspectionPanel = ({ selectedPlotId }) => {
             value={record.tax_status}
             valueClass={
               record.tax_status === 'Overdue'
-                ? 'text-red-600'
+                ? 'text-red-600 dark:text-red-400'
                 : record.tax_status === 'Pending'
-                ? 'text-amber-600'
-                : 'text-emerald-600'
+                ? 'text-amber-600 dark:text-amber-400'
+                : 'text-emerald-600 dark:text-emerald-400'
             }
           />
           <StatCell icon={Hash} label="Tax ID" value={record.tax_id} />
@@ -130,16 +132,16 @@ const PlotInspectionPanel = ({ selectedPlotId }) => {
             icon={AlertCircle}
             label="Area Discrepancy"
             value={`${discrepancy} m²`}
-            valueClass={isLargeDiscrepancy ? 'text-red-600 font-bold' : 'text-slate-700'}
+            valueClass={isLargeDiscrepancy ? 'text-red-600 dark:text-red-400 font-bold' : 'text-slate-700 dark:text-slate-200'}
           />
         </div>
 
         {/* AI Model Diagnostics (only if conflict exists) */}
         {conflict && (
-          <div className="bg-slate-50 rounded-md border border-slate-200 p-4 space-y-3">
+          <div className="bg-slate-50 dark:bg-slate-800/50 rounded-md border border-slate-200 dark:border-slate-800 p-4 space-y-3">
             <div className="flex items-center gap-2 mb-1">
-              <Brain size={16} className="text-teal-600" />
-              <h4 className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
+              <Brain size={16} className="text-teal-600 dark:text-teal-400" />
+              <h4 className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
                 AI Model Diagnostics
               </h4>
             </div>
@@ -160,11 +162,11 @@ const PlotInspectionPanel = ({ selectedPlotId }) => {
 };
 
 /* ── Small stat cell helper ────────────────────────────────────────── */
-const StatCell = ({ icon: Icon, label, value, valueClass = 'text-slate-700' }) => (
-  <div className="bg-slate-50 rounded-md border border-slate-100 p-3">
+const StatCell = ({ icon: Icon, label, value, valueClass = 'text-slate-700 dark:text-slate-200' }) => (
+  <div className="bg-slate-50 dark:bg-slate-800/70 rounded-md border border-slate-100 dark:border-slate-700/60 p-3 transition-colors">
     <div className="flex items-center gap-1.5 mb-1">
-      <Icon size={12} className="text-slate-400" />
-      <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">{label}</span>
+      <Icon size={12} className="text-slate-400 dark:text-slate-500" />
+      <span className="text-[10px] font-medium text-slate-400 dark:text-slate-400 uppercase tracking-wider">{label}</span>
     </div>
     <p className={`text-sm font-semibold ${valueClass} truncate`}>{value}</p>
   </div>

@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap, CircleMarker, Popup } from 'react-leaflet';
+import { useTheme } from '../../context/ThemeContext';
 import {
   plotsGeoJSON,
   buildingsGeoJSON,
@@ -78,7 +79,7 @@ const Legend = () => {
       {/* Mobile toggle button */}
       <button
         onClick={() => setMobileExpanded((prev) => !prev)}
-        className="sm:hidden flex items-center gap-1.5 bg-white/95 backdrop-blur-sm px-2.5 py-1.5 rounded-md shadow-md border border-slate-200 text-xs font-semibold text-slate-700"
+        className="sm:hidden flex items-center gap-1.5 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm px-2.5 py-1.5 rounded-md shadow-md border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors"
       >
         <span>Legend</span>
         <span className="text-[10px] text-slate-400">{mobileExpanded ? '▲' : '▼'}</span>
@@ -88,12 +89,12 @@ const Legend = () => {
       <div
         className={`${
           mobileExpanded ? 'block mt-1.5' : 'hidden'
-        } sm:block bg-white/95 backdrop-blur-sm rounded-lg shadow-lg border border-slate-200 p-2.5 sm:p-3 text-left`}
+        } sm:block bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-2.5 sm:p-3 text-left transition-colors`}
       >
-        <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Layer Legend</p>
+        <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Layer Legend</p>
         <div className="space-y-1.5">
           {LEGEND_ITEMS.map((item) => (
-            <div key={item.label} className="flex items-center gap-2 text-[11px] sm:text-xs text-slate-600">
+            <div key={item.label} className="flex items-center gap-2 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
               {item.type === 'fill' && (
                 <span className="w-3.5 sm:w-4 h-2.5 sm:h-3 rounded-sm border shrink-0" style={{ backgroundColor: item.color + '60', borderColor: item.color }} />
               )}
@@ -118,6 +119,8 @@ const Legend = () => {
 /* ── Main MapView component ────────────────────────────────────────── */
 
 const MapView = ({ layers, selectedPlotId, onPlotClick }) => {
+  const { isDark } = useTheme();
+
   /* React-leaflet requires unique keys when GeoJSON data/style changes,
      so we use the selectedPlotId as part of the key for the plots layer
      to force a re-render when selection changes. */
@@ -148,7 +151,7 @@ const MapView = ({ layers, selectedPlotId, onPlotClick }) => {
   };
 
   return (
-    <div className="relative w-full h-full min-h-[400px] rounded-lg overflow-hidden border border-slate-200 shadow-sm">
+    <div className="relative w-full h-full min-h-[400px] rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
       <MapContainer
         center={MAP_CENTER}
         zoom={MAP_ZOOM}
@@ -156,9 +159,9 @@ const MapView = ({ layers, selectedPlotId, onPlotClick }) => {
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={true}
       >
-        {/* Base tile layer */}
+        {/* Base tile layer — styled with CSS dark filter when dark mode is enabled */}
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 

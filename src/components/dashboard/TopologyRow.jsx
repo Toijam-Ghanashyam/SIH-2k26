@@ -27,16 +27,16 @@ const TopologyRow = ({ plotsCount, repaired, snapped }) => {
           return (
             <div
               key={card.label}
-              className="rounded-md border border-slate-200 bg-slate-50 p-2 sm:p-3 hover:bg-white transition-colors duration-200"
+              className="rounded-md border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-2 sm:p-3 hover:bg-white dark:hover:bg-slate-800 transition-colors duration-200"
             >
               <div className="flex items-center gap-1.5 mb-1 sm:mb-1.5">
                 <Icon size={13} className="text-slate-400 shrink-0" />
-                <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 uppercase tracking-wide leading-tight truncate">
+                <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide leading-tight truncate">
                   {card.label}
                 </span>
               </div>
-              <p className="text-base sm:text-xl font-bold text-slate-700">{card.value}</p>
-              <span className="text-[10px] sm:text-[11px] text-slate-400">{card.sub}</span>
+              <p className="text-base sm:text-xl font-bold text-slate-700 dark:text-slate-200">{card.value}</p>
+              <span className="text-[10px] sm:text-[11px] text-slate-400 dark:text-slate-500">{card.sub}</span>
             </div>
           );
         })}

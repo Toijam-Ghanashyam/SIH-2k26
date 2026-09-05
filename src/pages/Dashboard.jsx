@@ -73,12 +73,12 @@ const Dashboard = () => {
   )?.metric_value || 0;
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col text-slate-800 dark:text-slate-100 transition-colors duration-200">
       {/* Top bar */}
       <TopBar onRerun={handleRerunEngine} isRunning={engineRunning} />
 
       {/* KPI and Topology rows */}
-      <div className="bg-white border-b border-slate-200">
+      <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors">
         <div className="max-w-[1920px] mx-auto">
           <KpiRow kpis={kpis} />
           <TopologyRow
@@ -93,13 +93,13 @@ const Dashboard = () => {
       <div className="lg:hidden px-3 sm:px-4 pt-3">
         <button
           onClick={() => setSidebarOpen(true)}
-          className="flex items-center justify-between w-full sm:w-auto gap-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-200 px-3.5 py-2 rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
+          className="flex items-center justify-between w-full sm:w-auto gap-2 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3.5 py-2 rounded-lg shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
         >
           <div className="flex items-center gap-2">
-            <Menu size={16} className="text-teal-600" />
+            <Menu size={16} className="text-teal-600 dark:text-teal-400" />
             <span>Map Layers & Ingestion</span>
           </div>
-          <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold border border-slate-200">
+          <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-full font-semibold border border-slate-200 dark:border-slate-700">
             {Object.values(layers).filter(Boolean).length} Active
           </span>
         </button>
