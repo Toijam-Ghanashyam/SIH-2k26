@@ -65,7 +65,7 @@ const TemporalCompareView = () => {
   }, [isDragging, handleMove]);
 
   return (
-    <div className="w-full h-full min-h-[400px] flex flex-col rounded-b-lg overflow-hidden bg-slate-100 dark:bg-slate-950 transition-colors">
+    <div className="temporal-compare-view w-full h-full min-h-[400px] flex flex-col rounded-b-lg overflow-hidden bg-slate-100 dark:bg-slate-950 transition-colors">
       {/* Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 px-3 py-2 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors">
         <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">

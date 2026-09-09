@@ -151,7 +151,7 @@ const MapView = ({ layers, selectedPlotId, onPlotClick }) => {
   };
 
   return (
-    <div className="relative w-full h-full min-h-[400px] rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+    <div className="map-2d-view relative w-full h-full min-h-[400px] rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
       <MapContainer
         center={MAP_CENTER}
         zoom={MAP_ZOOM}

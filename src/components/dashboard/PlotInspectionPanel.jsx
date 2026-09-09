@@ -11,13 +11,23 @@ import { revenueRecords, conflictsGeoJSON } from '../../data/mockData';
  *  - Download PDF button (stubbed)
  */
 
-const ConfidenceBar = ({ label, value, threshold = 85 }) => {
+const ConfidenceBar = ({ label, value, threshold = 78 }) => {
   const isHigh = value >= threshold;
-  const barColor = isHigh ? 'bg-emerald-500' : 'bg-amber-500';
+  const isMedium = value >= 50 && value < threshold;
+
+  const barColor = isHigh
+    ? 'bg-emerald-500'
+    : isMedium
+    ? 'bg-amber-500'
+    : 'bg-red-500';
+
   const badgeColor = isHigh
     ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60'
-    : 'text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/60';
-  const badgeText = isHigh ? 'High Certainty' : 'Needs Human Review';
+    : isMedium
+    ? 'text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/60'
+    : 'text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-950/60 border border-red-200 dark:border-red-800/60';
+
+  const badgeText = isHigh ? 'High Certainty' : 'Recommended Human Review';
 
   return (
     <div className="space-y-1">
@@ -152,7 +162,6 @@ const PlotInspectionPanel = ({ selectedPlotId }) => {
             <ConfidenceBar
               label="Spatial Overlap / IoU"
               value={conflict.properties.iou}
-              threshold={85}
             />
           </div>
         )}

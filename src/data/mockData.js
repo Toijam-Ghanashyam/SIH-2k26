@@ -229,7 +229,7 @@ export const conflictsGeoJSON = {
         conflict_type: 'Boundary Overlap',
         iou: 45.2,
         confidence_score: 78.4,
-        status: 'Needs Review'
+        status: 'Confirmed'
       },
       geometry: {
         type: 'Polygon',
@@ -261,7 +261,7 @@ export const conflictsGeoJSON = {
         conflict_type: 'Zoning Violation',
         iou: 33.1,
         confidence_score: 62.8,
-        status: 'Needs Review'
+        status: 'Recommended Human Review'
       },
       geometry: {
         type: 'Polygon',
@@ -293,7 +293,7 @@ export const conflictsGeoJSON = {
         conflict_type: 'Boundary Overlap',
         iou: 21.4,
         confidence_score: 48.2,
-        status: 'Unresolved'
+        status: 'Recommended Human Review'
       },
       geometry: {
         type: 'Polygon',
@@ -469,3 +469,18 @@ export function computeKPIs() {
 // ─── Map center (bounding box center of all data) ───────────────────
 export const MAP_CENTER = [26.853, 80.909];
 export const MAP_ZOOM = 16;
+
+// ─── Jurisdictional Land Revenue & Verification Offices ──────────────
+export const jurisdictionalRevenueOffice = {
+  office_name: 'Tehsil Sadar Land Revenue & Verification Office',
+  division: 'Circle 4 — Chowk & Mohan Road Urban Belt, Lucknow Division',
+  nodal_officer: 'Shri Ramesh K. Verma',
+  designation: 'Nayab Tehsildar & Nodal Land Revenue Officer (LRO)',
+  phone: '+91 522 262-4418',
+  mobile: '+91 94150-89214',
+  email: 'lri.zone4.revenue@up.gov.in',
+  address: 'Room 14, Tehsil Sadar Compound, Kaisarbagh, Lucknow, UP 226001',
+  office_hours: '09:30 AM – 05:30 PM (Mon–Sat)',
+  cadastral_code: 'UP-LKO-2026-LRO-04',
+};
+
