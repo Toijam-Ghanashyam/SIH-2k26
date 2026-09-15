@@ -1,26 +1,43 @@
-from typing import Any, Dict
-from schemas import BoundaryVertex, StakeholderBid
 from .base_agent import BaseAgent
+from ..schemas import DisputeContext, AgentProposal, ProposedBoundary
+
 
 class RevenueAgent(BaseAgent):
-    """
-    Represents legacy land records and cadastral maps. 
-    Strong legal standing but may have spatial drift due to old surveying methods.
-    """
-    def __init__(self, agent_name: str = "Revenue Agent"):
-        super().__init__(agent_name)
+    def __init__(self, agent_id: str):
+        super().__init__(agent_id=agent_id, stakeholder_type="Revenue", weight=1.0)
 
-    def evaluate_evidence(self, evidence_data: Dict[str, Any]) -> StakeholderBid:
-        # Deterministic mock logic extracting cadastral data
-        x = evidence_data.get("cadastral_x", 0.0)
-        y = evidence_data.get("cadastral_y", 0.0)
-        confidence = evidence_data.get("cadastral_confidence", 0.0)
-        
-        vertex = BoundaryVertex(x=x, y=y, id="vertex_revenue_01")
-        
-        return StakeholderBid(
-            agent_name=self.agent_name,
-            proposed_vertex=vertex,
+    def generate_proposal(self, context: DisputeContext, round_num: int) -> AgentProposal:
+        claimed = context.initial_claimed_boundaries.get("Revenue")
+        has_evidence = claimed is not None and len(claimed.coordinates) > 0
+        metadata = context.metadata or {}
+
+        if has_evidence:
+            boundary = claimed
+            # Check metadata for explicit revenue confidence; otherwise use conservative baseline
+            rev_conf = metadata.get("revenue_confidence")
+            if rev_conf is not None:
+                confidence = float(rev_conf)
+            else:
+                # Conservative confidence applied exclusively to verified existing cadastral geometry
+                confidence = 0.80
+
+            bid = round(confidence * self.weight * (1.0 - (round_num - 1) * 0.03), 4)
+            rationale = (
+                f"Official cadastral survey plot boundary verified from registry records "
+                f"(source: {metadata.get('revenue_source_used', 'cadastral_plots')})."
+            )
+        else:
+            # Empty boundary: no synthetic coordinates or false confidence
+            boundary = ProposedBoundary(coordinates=[], uncertainty_buffer_meters=0.0)
+            confidence = 0.0
+            bid = 0.0
+            rationale = "No authentic revenue/cadastral plot geometry available in database for this conflict."
+
+        return AgentProposal(
+            agent_id=self.agent_id,
+            stakeholder_type=self.stakeholder_type,
+            proposed_boundary=boundary,
             confidence_score=confidence,
-            evidence="Mock historical cadastral record match"
+            bid=bid,
+            rationale=rationale
         )

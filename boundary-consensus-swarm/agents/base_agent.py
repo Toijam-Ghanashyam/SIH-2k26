@@ -1,18 +1,15 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict
-from schemas import BoundaryVertex, StakeholderBid
+from ..schemas import DisputeContext, AgentProposal
 
 class BaseAgent(ABC):
-    """
-    Abstract base class defining the interface for all stakeholder agents.
-    """
-    def __init__(self, agent_name: str):
-        self.agent_name = agent_name
+    def __init__(self, agent_id: str, stakeholder_type: str, weight: float = 1.0):
+        self.agent_id = agent_id
+        self.stakeholder_type = stakeholder_type
+        self.weight = weight
 
     @abstractmethod
-    def evaluate_evidence(self, evidence_data: Dict[str, Any]) -> StakeholderBid:
+    def generate_proposal(self, context: DisputeContext, round_num: int) -> AgentProposal:
         """
-        Takes in spatial evidence (as a dictionary for this MVP) and 
-        returns a structured StakeholderBid containing the proposed vertex.
+        Generate a spatial boundary proposal and bid for the given dispute context.
         """
         pass

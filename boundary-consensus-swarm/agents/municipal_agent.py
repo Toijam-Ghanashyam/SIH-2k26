@@ -1,26 +1,41 @@
-from typing import Any, Dict
-from schemas import BoundaryVertex, StakeholderBid
 from .base_agent import BaseAgent
+from ..schemas import DisputeContext, AgentProposal, ProposedBoundary
+
 
 class MunicipalAgent(BaseAgent):
-    """
-    Represents municipal town-planning records and local utility maps.
-    Practical and utility-focused, acting as a middle-ground reference.
-    """
-    def __init__(self, agent_name: str = "Municipal Agent"):
-        super().__init__(agent_name)
+    def __init__(self, agent_id: str):
+        super().__init__(agent_id=agent_id, stakeholder_type="Municipal", weight=0.9)
 
-    def evaluate_evidence(self, evidence_data: Dict[str, Any]) -> StakeholderBid:
-        # Deterministic mock logic extracting municipal data
-        x = evidence_data.get("municipal_x", 0.0)
-        y = evidence_data.get("municipal_y", 0.0)
-        confidence = evidence_data.get("municipal_confidence", 0.0)
-        
-        vertex = BoundaryVertex(x=x, y=y, id="vertex_municipal_01")
-        
-        return StakeholderBid(
-            agent_name=self.agent_name,
-            proposed_vertex=vertex,
+    def generate_proposal(self, context: DisputeContext, round_num: int) -> AgentProposal:
+        claimed = context.initial_claimed_boundaries.get("Municipal")
+        has_evidence = claimed is not None and len(claimed.coordinates) > 0
+        metadata = context.metadata or {}
+
+        if has_evidence:
+            boundary = claimed
+            muni_conf = metadata.get("municipal_confidence")
+            if muni_conf is not None:
+                confidence = float(muni_conf)
+            else:
+                confidence = 0.75
+
+            bid = round(confidence * self.weight * (1.0 - (round_num - 1) * 0.02), 4)
+            rationale = (
+                f"Spatially intersecting urban local body zone boundary verified "
+                f"(source: {metadata.get('municipal_source_used', 'municipal_layers')})."
+            )
+        else:
+            # Missing evidence: 0.0 confidence and 0.0 bid without fallback coordinates
+            boundary = ProposedBoundary(coordinates=[], uncertainty_buffer_meters=0.0)
+            confidence = 0.0
+            bid = 0.0
+            rationale = "No intersecting municipal jurisdiction or zone boundary found for this conflict."
+
+        return AgentProposal(
+            agent_id=self.agent_id,
+            stakeholder_type=self.stakeholder_type,
+            proposed_boundary=boundary,
             confidence_score=confidence,
-            evidence="Mock municipal town planning boundary map"
+            bid=bid,
+            rationale=rationale
         )

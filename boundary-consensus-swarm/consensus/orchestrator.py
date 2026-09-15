@@ -1,78 +1,73 @@
-from typing import Dict, Any, List, Optional
-from pydantic import BaseModel
-from schemas import StakeholderBid, ConsensusResult, BoundaryVertex
-from agents import DroneAgent, RevenueAgent, MunicipalAgent
-from consensus.auction import AuctionEngine
-from consensus.game_theory import GameTheoryEngine
-
-class OrchestrationResult(BaseModel):
-    """
-    Pydantic model representing the complete lifecycle output of the consensus workflow.
-    """
-    bids: List[StakeholderBid]
-    auction_result: Optional[ConsensusResult]
-    final_consensus: Optional[ConsensusResult]
+from typing import List, Dict, Any
+from ..schemas import DisputeContext, ResolutionReport, ConsensusRoundResult, AgentProposal
+from .auction import VickreyAuction
+from .game_theory import ShapleyPayoffCalculator
+from ..agents.drone_agent import DroneAgent
+from ..agents.revenue_agent import RevenueAgent
+from ..agents.municipal_agent import MunicipalAgent
 
 class ConsensusOrchestrator:
-    """
-    Coordinates the multi-agent workflow:
-    1. Instantiates the stakeholder agents.
-    2. Feeds them raw evidence to generate bids.
-    3. Runs the AuctionEngine (for comparative/clustering insights).
-    4. Runs the GameTheoryEngine (for the final negotiated compromise).
-    """
-    def __init__(self):
-        self.auction_engine = AuctionEngine()
-        self.game_theory_engine = GameTheoryEngine()
-
-    def run_workflow(self, evidence_data: Dict[str, Any]) -> OrchestrationResult:
-        # 1. Safely handle empty or invalid input
-        if evidence_data is None or not isinstance(evidence_data, dict):
-            evidence_data = {}
-
-        # 2. Instantiate agents
-        agents = [
-            DroneAgent(),
-            RevenueAgent(),
-            MunicipalAgent()
+    def __init__(self, max_rounds: int = 5, consensus_threshold: float = 0.85):
+        self.max_rounds = max_rounds
+        self.consensus_threshold = consensus_threshold
+        self.auction_engine = VickreyAuction()
+        self.payoff_engine = ShapleyPayoffCalculator()
+        
+    def initialize_agents(self) -> List[Any]:
+        return [
+            DroneAgent(agent_id="agent_drone_01"),
+            RevenueAgent(agent_id="agent_revenue_01"),
+            MunicipalAgent(agent_id="agent_municipal_01")
         ]
 
-        # 3. Collect Bids safely
-        bids: List[StakeholderBid] = []
-        for agent in agents:
-            try:
-                bid = agent.evaluate_evidence(evidence_data)
-                bids.append(bid)
-            except Exception as e:
-                # Log error and continue so one failing agent doesn't crash the swarm
-                print(f"Warning: {agent.agent_name} failed to evaluate evidence. Error: {e}")
+    def run_resolution_cycle(self, context: DisputeContext) -> ResolutionReport:
+        agents = self.initialize_agents()
+        audit_trail: List[ConsensusRoundResult] = []
+        is_resolved = False
+        final_round_result = None
 
-        # Fallback response if an engine crashes unexpectedly
-        fallback_res = ConsensusResult(
-            final_vertex=BoundaryVertex(x=0.0, y=0.0, id="error_fallback"),
-            winning_stakeholder=None,
-            final_confidence_score=0.0,
-            status="failed",
-            explanation="Engine execution failed unexpectedly."
-        )
+        for round_num in range(1, self.max_rounds + 1):
+            # Gather proposals
+            proposals: List[AgentProposal] = []
+            for agent in agents:
+                proposal = agent.generate_proposal(context, round_num)
+                proposals.append(proposal)
+                
+            # Run Vickrey Auction
+            winning_proposal, second_highest_bid = self.auction_engine.determine_winner(proposals)
+            
+            # Calculate Game Theoretic Payoffs
+            payoffs = self.payoff_engine.calculate_payoffs(proposals, winning_proposal)
+            
+            # Evaluate Consensus
+            consensus_score = self.payoff_engine.evaluate_consensus_score(proposals)
+            
+            status = "RESOLVED" if consensus_score >= self.consensus_threshold else "IN_PROGRESS"
+            if round_num == self.max_rounds and status != "RESOLVED":
+                status = "DEADLOCK"
 
-        # 4 & 5. Run Auction Engine
-        try:
-            auction_res = self.auction_engine.run_auction(bids)
-        except Exception as e:
-            print(f"Warning: AuctionEngine failed. Error: {e}")
-            auction_res = fallback_res
+            round_result = ConsensusRoundResult(
+                round_number=round_num,
+                winning_agent_id=winning_proposal.agent_id,
+                winning_stakeholder=winning_proposal.stakeholder_type,
+                winning_boundary=winning_proposal.proposed_boundary,
+                payoff=second_highest_bid,
+                consensus_score=consensus_score,
+                status=status,
+                agent_payoffs=payoffs
+            )
+            audit_trail.append(round_result)
+            final_round_result = round_result
 
-        # 6 & 7. Run Game Theory Engine (This acts as the final decision layer)
-        try:
-            game_theory_res = self.game_theory_engine.run_negotiation(bids)
-        except Exception as e:
-            print(f"Warning: GameTheoryEngine failed. Error: {e}")
-            game_theory_res = fallback_res
+            if status == "RESOLVED":
+                is_resolved = True
+                break
 
-        # 8. Return structured result
-        return OrchestrationResult(
-            bids=bids,
-            auction_result=auction_res,
-            final_consensus=game_theory_res
+        return ResolutionReport(
+            dispute_id=context.dispute_id,
+            final_boundary=final_round_result.winning_boundary,
+            rounds_taken=len(audit_trail),
+            consensus_score=final_round_result.consensus_score,
+            audit_trail=audit_trail,
+            game_equilibrium_reached=is_resolved
         )
