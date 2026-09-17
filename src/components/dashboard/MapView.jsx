@@ -116,10 +116,54 @@ const Legend = () => {
   );
 };
 
+/* ── Map Resizer to force Leaflet to recalculate dimensions on tab/page change ── */
+function MapResizer() {
+  const map = useMap();
+  useEffect(() => {
+    map.invalidateSize();
+    const t1 = setTimeout(() => map.invalidateSize(), 100);
+    const t2 = setTimeout(() => map.invalidateSize(), 300);
+    const t3 = setTimeout(() => map.invalidateSize(), 700);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [map]);
+  return null;
+}
+
+const BASEMAPS = {
+  osm: {
+    label: 'Street',
+    icon: '🗺️',
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  },
+  satellite: {
+    label: 'Satellite',
+    icon: '🛰️',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    attribution: '&copy; <a href="https://www.esri.com">Esri</a> World Imagery',
+  },
+  dark: {
+    label: 'Dark',
+    icon: '🌙',
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    attribution: '&copy; <a href="https://carto.com/">CartoDB</a>',
+  },
+};
+
 /* ── Main MapView component ────────────────────────────────────────── */
 
 const MapView = ({ layers, selectedPlotId, onPlotClick }) => {
   const { isDark } = useTheme();
+  const [activeBasemap, setActiveBasemap] = React.useState(isDark ? 'dark' : 'osm');
+
+  // Sync default basemap with theme toggle if user hasn't explicitly chosen
+  useEffect(() => {
+    setActiveBasemap(isDark ? 'dark' : 'osm');
+  }, [isDark]);
 
   /* React-leaflet requires unique keys when GeoJSON data/style changes,
      so we use the selectedPlotId as part of the key for the plots layer
@@ -150,8 +194,29 @@ const MapView = ({ layers, selectedPlotId, onPlotClick }) => {
     layer.bindTooltip(feature.properties.type, { direction: 'top' });
   };
 
+  const currentTile = BASEMAPS[activeBasemap] || BASEMAPS.osm;
+
   return (
-    <div className="map-2d-view relative w-full h-full min-h-[400px] rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+    <div className="map-2d-view absolute inset-0 w-full h-full overflow-hidden border border-slate-300 dark:border-slate-800 shadow-sm transition-colors">
+      {/* Basemap Switcher Control (Top Right) */}
+      <div className="absolute top-3 right-3 z-[1000] bg-white/95 dark:bg-[#0c1829]/95 backdrop-blur-xs border border-slate-300 dark:border-slate-700 shadow-md p-1 flex items-center gap-1 select-none">
+        {Object.entries(BASEMAPS).map(([key, bm]) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setActiveBasemap(key)}
+            className={`px-2 py-1 text-[11px] font-semibold flex items-center gap-1 transition-colors ${
+              activeBasemap === key
+                ? 'bg-gov-navy text-white font-bold'
+                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <span>{bm.icon}</span>
+            <span>{bm.label}</span>
+          </button>
+        ))}
+      </div>
+
       <MapContainer
         center={MAP_CENTER}
         zoom={MAP_ZOOM}
@@ -159,10 +224,14 @@ const MapView = ({ layers, selectedPlotId, onPlotClick }) => {
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={true}
       >
-        {/* Base tile layer — styled with CSS dark filter when dark mode is enabled */}
+        <MapResizer />
+
+        {/* Selected Base tile layer */}
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          key={activeBasemap}
+          attribution={currentTile.attribution}
+          url={currentTile.url}
+          maxZoom={19}
         />
 
         {/* Cadastral Plots — blue */}

@@ -25,9 +25,9 @@ const MapTabs = ({ mapProps }) => {
   const [activeTab, setActiveTab] = useState('2d');
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full w-full relative">
       {/* Tab bar */}
-      <div className="flex border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-t-lg overflow-x-auto scrollbar-none transition-colors">
+      <div className="flex border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-none overflow-x-auto scrollbar-none transition-colors shrink-0 z-10">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -35,9 +35,9 @@ const MapTabs = ({ mapProps }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-medium whitespace-nowrap border-b-2 transition-all flex-1 sm:flex-initial justify-center ${
+              className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-semibold whitespace-nowrap border-b-2 transition-all flex-1 sm:flex-initial justify-center ${
                 isActive
-                  ? 'border-teal-500 text-teal-700 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-950/40'
+                  ? 'border-gov-navy dark:border-teal-400 text-gov-navy dark:text-teal-400 bg-slate-50 dark:bg-slate-800/80 font-bold'
                   : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60'
               }`}
             >
@@ -52,7 +52,7 @@ const MapTabs = ({ mapProps }) => {
       </div>
 
       {/* Tab content */}
-      <div className="flex-1 min-h-[400px]">
+      <div className="flex-1 w-full h-full relative min-h-[520px]">
         {activeTab === '2d' && <MapView {...mapProps} />}
         {activeTab === '3d' && <ElevationView />}
         {activeTab === 'temporal' && <TemporalCompareView />}

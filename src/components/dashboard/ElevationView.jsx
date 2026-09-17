@@ -1,22 +1,21 @@
 import React, { useMemo } from 'react';
 import { DeckGL } from '@deck.gl/react';
 import { GeoJsonLayer } from '@deck.gl/layers';
-import { buildingsGeoJSON, MAP_CENTER } from '../../data/mockData';
+import { buildingsGeoJSON, plotsGeoJSON, MAP_CENTER } from '../../data/mockData';
 
 /**
  * ElevationView — 3D extruded building footprints using deck.gl.
- * Mirrors the pydeck 3D view in app.py.
  *
+ * - Cadastral plot boundaries in 3D
  * - Extruded polygons with elevation_m * 2
  * - Tilted camera (pitch ~55°, bearing ~-25°)
  * - Hover tooltip: Structure ID + Height
- * - Green fill, white wireframe
  */
 
 const INITIAL_VIEW_STATE = {
   longitude: MAP_CENTER[1],
   latitude: MAP_CENTER[0],
-  zoom: 15.5,
+  zoom: 16.2,
   pitch: 55,
   bearing: -25,
   minZoom: 13,
@@ -24,20 +23,33 @@ const INITIAL_VIEW_STATE = {
 };
 
 const ElevationView = () => {
-  // Check if buildings have elevation data
   const hasElevation = buildingsGeoJSON.features.some(
     (f) => f.properties.elevation_m != null
   );
 
   if (!hasElevation) {
     return (
-      <div className="w-full h-full min-h-[400px] flex items-center justify-center bg-slate-100 rounded-b-lg">
+      <div className="w-full h-full min-h-[500px] flex items-center justify-center bg-slate-100 dark:bg-slate-900 rounded-none">
         <p className="text-sm text-slate-400">No 3D elevation data available to render.</p>
       </div>
     );
   }
 
   const layers = [
+
+    // 2. Cadastral parcel plot boundaries projected on 3D ground plane
+    new GeoJsonLayer({
+      id: 'plots-3d-boundary',
+      data: plotsGeoJSON,
+      filled: false,
+      stroked: true,
+      getLineColor: [59, 130, 246, 255], // bright blue
+      getLineWidth: 2.5,
+      lineWidthUnits: 'pixels',
+      pickable: false,
+    }),
+
+    // 3. 3D Extruded Building Footprints with DSM height elevation
     new GeoJsonLayer({
       id: 'buildings-3d',
       data: buildingsGeoJSON,
@@ -45,21 +57,25 @@ const ElevationView = () => {
       wireframe: true,
       filled: true,
       getElevation: (f) => (f.properties.elevation_m || 5) * 2,
-      getFillColor: [34, 197, 94, 180], // green-500 with alpha
-      getLineColor: [255, 255, 255, 200], // white wireframe
+      getFillColor: [34, 197, 94, 210], // green with alpha
+      getLineColor: [255, 255, 255, 230], // crisp white wireframe edges
       lineWidthMinPixels: 1,
       pickable: true,
       autoHighlight: true,
-      highlightColor: [13, 148, 136, 200], // teal highlight
+      highlightColor: [234, 179, 8, 220], // amber highlight
     }),
   ];
 
   return (
-    <div className="w-full h-full min-h-[400px] relative rounded-b-lg overflow-hidden bg-slate-900">
-      {/* Caption */}
-      <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 z-10 bg-navy-900/80 backdrop-blur-sm rounded-md px-2.5 sm:px-3 py-1.5 sm:py-2 border border-navy-700 max-w-[85vw] sm:max-w-none">
-        <p className="text-[10px] sm:text-[11px] text-slate-300 leading-tight">
-          Interactive 3D heights — drag to rotate, scroll/pinch to zoom.
+    <div className="w-full h-full min-h-[500px] absolute inset-0 rounded-none overflow-hidden bg-[#071324]">
+      {/* Legend & Controls Caption */}
+      <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 z-10 bg-[#0c1e36]/90 backdrop-blur-xs rounded-none px-3 py-2 border border-slate-700 max-w-[85vw] sm:max-w-md shadow-md text-white">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="w-2 h-2 bg-emerald-400 inline-block" />
+          <span className="text-xs font-bold uppercase tracking-wider">3D Digital Elevation Model (DSM)</span>
+        </div>
+        <p className="text-[11px] text-slate-300 leading-tight">
+          Satellite ground plane + AI building extrusions. Drag mouse to rotate/pitch camera, scroll to zoom.
         </p>
       </div>
 

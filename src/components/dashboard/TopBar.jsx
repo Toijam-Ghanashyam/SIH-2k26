@@ -9,11 +9,11 @@ import ThemeToggle from '../ThemeToggle';
  */
 const TopBar = ({ onRerun, isRunning }) => {
   return (
-    <header className="bg-navy-900 dark:bg-slate-900 border-b border-navy-700 dark:border-slate-800 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between sticky top-0 z-[1010] transition-colors duration-200">
+    <header className="bg-navy-900 dark:bg-slate-900 border-b border-navy-700 dark:border-slate-800 px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between sticky top-0 z-[2000] transition-colors duration-200">
       {/* Product wordmark — matches the landing page Navbar */}
       <Link to="/" className="flex items-center gap-2 group">
         <span className="text-white text-lg sm:text-xl font-bold tracking-tight group-hover:text-teal-300 transition-colors">
-          GeoSync
+          GeoHarmonize <span className="text-teal-400">AI</span>
         </span>
         <span className="text-[10px] text-slate-400 border border-slate-600 px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
           Dashboard

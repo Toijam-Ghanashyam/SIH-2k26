@@ -7,7 +7,7 @@ const Footer = () => {
         
         <div className="mb-4 md:mb-0 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start space-x-2 mb-2">
-            <span className="text-white text-xl font-bold tracking-tight">GeoSync</span>
+            <span className="text-white text-xl font-bold tracking-tight">GeoHarmonize <span className="text-accent-teal">AI</span></span>
             <span className="text-xs bg-navy-800 text-slate-300 px-2 py-0.5 rounded border border-navy-700">PS26013</span>
           </div>
           <p className="text-sm">Team <span className="text-white font-medium">The Intellect</span></p>
