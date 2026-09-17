@@ -3,26 +3,21 @@ import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
-const ScrollProgressTricolor = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
+import { motion, useScroll, useSpring } from 'framer-motion';
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollTop;
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scroll = totalScroll / windowHeight;
-      setScrollProgress(scroll * 100);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+const ScrollProgressTricolor = () => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   return (
     <div className="w-full h-1.5 bg-navy-900/50 absolute top-0 left-0 z-50">
-      <div 
-        className="h-full india-tricolor-bar transition-all duration-75 ease-out" 
-        style={{ width: `${scrollProgress}%` }}
+      <motion.div 
+        className="h-full india-tricolor-bar origin-left" 
+        style={{ scaleX, width: '100%' }}
       />
     </div>
   );
