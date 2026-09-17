@@ -1,10 +1,17 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { DashboardProvider, useDashboard } from '../context/DashboardContext';
 import GovHeader from '../components/common/GovHeader';
-import GovNavTabs from '../components/common/GovNavTabs';
 import GovFooter from '../components/common/GovFooter';
 import Toast from '../components/dashboard/Toast';
+
+const pageTransition = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -8 },
+  transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] },
+};
 
 const DashboardContent = () => {
   const { toast, setToast } = useDashboard();
@@ -56,10 +63,17 @@ const DashboardContent = () => {
   return (
     <div className="min-h-screen bg-[#f4f6f9] dark:bg-[#070e17] flex flex-col text-slate-900 dark:text-slate-100 transition-colors">
       <GovHeader />
-      <GovNavTabs />
 
       <main id="main-content" className="flex-1 flex flex-col w-full">
-        <Outlet />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            className="flex-1 flex flex-col"
+            {...pageTransition}
+          >
+            <Outlet />
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       <GovFooter />

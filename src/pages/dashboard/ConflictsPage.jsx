@@ -10,8 +10,10 @@ import {
   ShieldAlert,
   CheckCircle2,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { conflictsGeoJSON } from '../../data/mockData';
 import { useDashboard } from '../../context/DashboardContext';
+import AnimateOnScroll from '../../components/common/AnimateOnScroll';
 import RevenueOfficeModal from '../../components/dashboard/RevenueOfficeModal';
 
 const getConfidenceBadge = (score) => {
@@ -134,25 +136,27 @@ const ConflictsPage = () => {
       </div>
 
       {/* Threshold Information Alert */}
-      <div className="bg-amber-50 dark:bg-amber-950/40 border-l-4 border-l-amber-500 border border-amber-200 dark:border-amber-800 p-3.5 text-xs text-amber-900 dark:text-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-start gap-2.5">
-          <ShieldAlert size={18} className="text-amber-600 shrink-0 mt-0.5" />
-          <div>
-            <p className="font-bold uppercase tracking-wider text-[11px]">
-              Statutory 78% Confidence Review Threshold Active (DoLR Standard PS26013)
-            </p>
-            <p className="text-amber-800 dark:text-amber-300 mt-0.5 leading-relaxed">
-              Plots with AI extraction confidence below 78% cannot be finalized automatically without manual physical verification by the Jurisdictional Revenue Inspector (RI) and Nayab Tehsildar.
-            </p>
+      <AnimateOnScroll>
+        <div className="bg-amber-50/80 dark:bg-amber-950/30 border-l-4 border-l-amber-500 border border-amber-200/60 dark:border-amber-800/50 p-3 sm:p-4 text-xs text-amber-900 dark:text-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-lg shadow-sm">
+          <div className="flex items-start gap-2.5">
+            <ShieldAlert size={18} className="text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-bold uppercase tracking-wider text-[11px]">
+                Statutory 78% Confidence Review Threshold Active (DoLR Standard PS26013)
+              </p>
+              <p className="text-amber-800 dark:text-amber-300/80 mt-1 leading-relaxed">
+                Plots with AI extraction confidence below 78% cannot be finalized automatically without manual physical verification by the Jurisdictional Revenue Inspector (RI) and Nayab Tehsildar.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="font-mono font-bold bg-white dark:bg-amber-900/60 px-2.5 py-1.5 border border-amber-300 dark:border-amber-700/60 rounded-lg shadow-sm">
+              {reviewRequiredConflicts.length} Flagged for Review
+            </span>
           </div>
         </div>
-
-        <div className="flex items-center gap-2 shrink-0">
-          <span className="font-mono font-bold bg-white dark:bg-amber-900 px-2 py-1 border border-amber-300 dark:border-amber-700">
-            {reviewRequiredConflicts.length} Flagged for Review
-          </span>
-        </div>
-      </div>
+      </AnimateOnScroll>
 
       {/* Filter Tabs */}
       <div className="gov-box p-2.5 flex flex-wrap items-center justify-between gap-2 bg-slate-50 dark:bg-slate-900">
@@ -166,10 +170,10 @@ const ConflictsPage = () => {
             <button
               key={tab.id}
               onClick={() => setActiveFilter(tab.id)}
-              className={`px-3 py-1 text-xs font-semibold border transition-colors ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm ${
                 activeFilter === tab.id
-                  ? 'bg-gov-navy text-white border-gov-navy'
-                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-100'
+                  ? 'bg-gov-navy text-white border-gov-navy shadow-sm'
+                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50'
               }`}
             >
               {tab.label}
@@ -214,7 +218,13 @@ const ConflictsPage = () => {
               const isReviewRequired = c.confidence_score < 78;
 
               return (
-                <tr key={c.conflict_id} className="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors">
+                <motion.tr 
+                  key={c.conflict_id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.05 * (filteredConflicts.indexOf(c) % 15) }}
+                  className="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+                >
                   {/* Plot ID */}
                   <td className="p-2.5 font-mono font-bold text-blue-700 dark:text-blue-400 border-r border-slate-200 dark:border-slate-800 whitespace-nowrap">
                     {c.plot_id}
@@ -232,7 +242,7 @@ const ConflictsPage = () => {
 
                   {/* Confidence Score */}
                   <td className="p-2.5 border-r border-slate-200 dark:border-slate-800 whitespace-nowrap">
-                    <span className={`gov-badge ${badge.bg} ${badge.fg} ${badge.border}`}>
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-lg uppercase tracking-wider border ${badge.bg} ${badge.fg} ${badge.border}`}>
                       {c.confidence_score}% — {badge.text}
                     </span>
                   </td>
@@ -243,7 +253,7 @@ const ConflictsPage = () => {
                       <button
                         type="button"
                         onClick={() => handleOpenModal(c)}
-                        className="gov-btn bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-700"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700 transition-colors"
                         title="Click to connect with Nayab Tehsildar & Nodal LRO"
                       >
                         <span className="underline decoration-dotted underline-offset-2">
@@ -252,7 +262,7 @@ const ConflictsPage = () => {
                         <ExternalLink size={11} className="shrink-0" />
                       </button>
                     ) : (
-                      <span className="gov-badge bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-lg uppercase tracking-wider border bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300">
                         <CheckCircle2 size={11} />
                         Automated Encroachment Confirmed
                       </span>
@@ -263,7 +273,7 @@ const ConflictsPage = () => {
                   <td className="p-2.5 text-center whitespace-nowrap space-x-1.5">
                     <button
                       onClick={() => handleInspectOnMap(c.plot_id)}
-                      className="gov-btn bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-800 hover:bg-blue-100"
+                      className="gov-btn bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-800 hover:bg-blue-100 hover:shadow-sm hover:-translate-y-0.5 transition-all"
                       title="Inspect parcel overlay on Interactive Map"
                     >
                       <MapPin size={12} />
@@ -273,7 +283,7 @@ const ConflictsPage = () => {
                     {isReviewRequired && (
                       <button
                         onClick={() => handleOpenModal(c)}
-                        className="gov-btn bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-200"
+                        className="gov-btn bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-200 hover:shadow-sm hover:-translate-y-0.5 transition-all"
                         title="Dispatch case file to Tehsil Sadar Revenue Office"
                       >
                         <Building2 size={12} />
@@ -281,7 +291,7 @@ const ConflictsPage = () => {
                       </button>
                     )}
                   </td>
-                </tr>
+                </motion.tr>
               );
             })}
           </tbody>

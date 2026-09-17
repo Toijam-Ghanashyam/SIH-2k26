@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import { useDashboard } from '../../context/DashboardContext';
 import { plotsGeoJSON, buildingsGeoJSON, conflictsGeoJSON, municipalGeoJSON, utilitiesGeoJSON, gtGeoJSON, gnssGeoJSON } from '../../data/mockData';
+import AnimateOnScroll from '../../components/common/AnimateOnScroll';
+import AnimatedCounter from '../../components/common/AnimatedCounter';
 
 const AnalyticsPage = () => {
   const { kpis, repaired, snapped, plotsCount, language } = useDashboard();
@@ -57,7 +59,7 @@ const AnalyticsPage = () => {
           <span className="text-[11px] text-slate-500 font-mono">Formula: PostGIS ST_Area & ST_Intersects</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <AnimateOnScroll className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" staggerChildren={0.08}>
           {/* Card 1 */}
           <div className="gov-box p-4 border-l-4 border-l-gov-navy dark:border-l-teal-500">
             <div className="flex items-center justify-between mb-1">
@@ -67,7 +69,7 @@ const AnalyticsPage = () => {
               <TrendingUp size={16} className="text-gov-navy dark:text-teal-400" />
             </div>
             <p className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono">
-              {kpis.totalAreaHectares} <span className="text-sm font-sans font-semibold text-slate-500">ha</span>
+              <AnimatedCounter to={parseFloat(kpis.totalAreaHectares)} duration={1800} decimals={2} /> <span className="text-sm font-sans font-semibold text-slate-500">ha</span>
             </p>
             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
               10 Cadastral parcels · 12,850 m²
@@ -83,7 +85,7 @@ const AnalyticsPage = () => {
               <Building2 size={16} className="text-blue-600 dark:text-blue-400" />
             </div>
             <p className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono">
-              {kpis.totalBuildings}
+              <AnimatedCounter to={kpis.totalBuildings} duration={1600} />
             </p>
             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
               Drone orthomosaic segmentation
@@ -99,7 +101,7 @@ const AnalyticsPage = () => {
               <AlertTriangle size={16} className="text-red-600 dark:text-red-400" />
             </div>
             <p className="text-2xl sm:text-3xl font-black text-red-700 dark:text-red-400 font-mono">
-              {kpis.encroachments}
+              <AnimatedCounter to={kpis.encroachments} duration={1400} />
             </p>
             <span className="inline-block mt-1 text-[10px] font-bold text-red-800 dark:text-red-300 bg-red-100 dark:bg-red-950 border border-red-300 dark:border-red-800 px-1.5 py-0.2">
               ⚠ Requires Field Verification
@@ -115,13 +117,13 @@ const AnalyticsPage = () => {
               <Target size={16} className="text-gov-green" />
             </div>
             <p className="text-2xl sm:text-3xl font-black text-emerald-700 dark:text-emerald-400 font-mono">
-              {kpis.accuracyRate}%
+              <AnimatedCounter to={parseFloat(kpis.accuracyRate)} duration={2000} decimals={1} suffix="%" />
             </p>
             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
               Calibrated against ground truth points
             </p>
           </div>
-        </div>
+        </AnimateOnScroll>
       </section>
 
       {/* 2. Automated Topology Diagnostics */}
@@ -135,7 +137,7 @@ const AnalyticsPage = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <AnimateOnScroll className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" staggerChildren={0.08}>
           <div className="gov-box p-3 bg-white dark:bg-slate-900">
             <div className="flex items-center gap-2 mb-1">
               <Wrench size={14} className="text-slate-500" />
@@ -179,7 +181,7 @@ const AnalyticsPage = () => {
             <p className="text-xl font-mono font-bold text-emerald-600 dark:text-emerald-400">99.8%</p>
             <p className="text-[10px] text-slate-500 dark:text-slate-400">+1.2% post automated correction</p>
           </div>
-        </div>
+        </AnimateOnScroll>
       </section>
 
       {/* 3. Multi-Dataset Synthesis Grid */}
@@ -219,10 +221,10 @@ const AnalyticsPage = () => {
                     {item.source}
                   </td>
                   <td className="p-2.5">
-                    <span className={`gov-badge ${
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-lg uppercase tracking-wider ${
                       item.alert
-                        ? 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border-red-300 dark:border-red-800'
-                        : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800'
+                        ? 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border border-red-200 dark:border-red-800'
+                        : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
                     }`}>
                       {item.status}
                     </span>

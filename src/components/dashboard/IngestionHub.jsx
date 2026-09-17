@@ -128,12 +128,13 @@ const IngestionHub = ({ onIngestSuccess }) => {
       )}
 
       {/* File upload */}
-      <div className="relative">
+      <div className="relative group transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
+        <div className="absolute inset-0 bg-teal-50 dark:bg-teal-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
         <input
           type="file"
           accept={acceptedTypes}
           onChange={handleFileChange}
-          className="w-full text-xs border border-dashed border-slate-300 dark:border-slate-700 rounded-md p-2 text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-teal-600 file:text-white file:cursor-pointer hover:border-teal-400 transition-colors"
+          className="relative z-10 w-full text-xs border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-lg p-3 text-slate-600 dark:text-slate-300 bg-slate-50/50 dark:bg-slate-800/40 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-teal-600 file:text-white file:cursor-pointer hover:border-teal-400 dark:hover:border-teal-500 transition-all cursor-pointer outline-none focus:ring-2 focus:ring-teal-500/20"
         />
       </div>
 

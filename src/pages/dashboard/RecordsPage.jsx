@@ -6,8 +6,11 @@ import {
   MapPin,
   FileDown,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { revenueRecords } from '../../data/mockData';
 import { useDashboard } from '../../context/DashboardContext';
+import AnimateOnScroll from '../../components/common/AnimateOnScroll';
+import AnimatedCounter from '../../components/common/AnimatedCounter';
 
 const RecordsPage = () => {
   const navigate = useNavigate();
@@ -102,34 +105,34 @@ const RecordsPage = () => {
       </div>
 
       {/* Summary Stat Strip */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="gov-box p-3 border-l-4 border-l-blue-600">
+      <AnimateOnScroll className="grid grid-cols-1 sm:grid-cols-3 gap-4" staggerChildren={0.1}>
+        <div className="gov-box p-4 border-l-4 border-l-blue-600 dark:border-l-blue-500 shadow-sm bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
           <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             Total Deeded Area (RoR)
           </span>
-          <p className="text-xl font-mono font-bold text-slate-900 dark:text-white mt-0.5">
-            {totalRegistered.toLocaleString()} <span className="text-xs font-sans font-normal text-slate-500">m²</span>
+          <p className="text-xl font-mono font-bold text-slate-900 dark:text-white mt-1">
+            <AnimatedCounter to={totalRegistered} duration={1500} /> <span className="text-xs font-sans font-normal text-slate-500">m²</span>
           </p>
         </div>
 
-        <div className="gov-box p-3 border-l-4 border-l-emerald-600">
+        <div className="gov-box p-4 border-l-4 border-l-emerald-600 dark:border-l-emerald-500 shadow-sm bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
           <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             Total GIS Surveyed Area
           </span>
-          <p className="text-xl font-mono font-bold text-slate-900 dark:text-white mt-0.5">
-            {totalGis.toLocaleString()} <span className="text-xs font-sans font-normal text-slate-500">m²</span>
+          <p className="text-xl font-mono font-bold text-slate-900 dark:text-white mt-1">
+            <AnimatedCounter to={totalGis} duration={1500} /> <span className="text-xs font-sans font-normal text-slate-500">m²</span>
           </p>
         </div>
 
-        <div className="gov-box p-3 border-l-4 border-l-amber-500">
+        <div className="gov-box p-4 border-l-4 border-l-amber-500 dark:border-l-amber-400 shadow-sm bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
           <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             Net Survey Discrepancy
           </span>
-          <p className="text-xl font-mono font-bold text-amber-700 dark:text-amber-400 mt-0.5">
-            ±{totalDiscrepancy} <span className="text-xs font-sans font-normal text-slate-500">m² (0.8%)</span>
+          <p className="text-xl font-mono font-bold text-amber-700 dark:text-amber-400 mt-1">
+            ±<AnimatedCounter to={totalDiscrepancy} duration={1500} /> <span className="text-xs font-sans font-normal text-slate-500">m² (0.8%)</span>
           </p>
         </div>
-      </div>
+      </AnimateOnScroll>
 
       {/* Filter & Search Bar */}
       <div className="gov-box p-3 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-slate-50/70 dark:bg-slate-900">
@@ -159,9 +162,9 @@ const RecordsPage = () => {
               <button
                 key={status}
                 onClick={() => setTaxFilter(status)}
-                className={`px-2 py-1 text-[11px] font-semibold transition-colors ${
+                className={`px-2 py-1 text-[11px] font-semibold transition-all duration-200 hover:scale-[1.03] ${
                   taxFilter === status
-                    ? 'bg-gov-navy text-white'
+                    ? 'bg-gov-navy text-white shadow-sm'
                     : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
                 }`}
               >
@@ -220,7 +223,13 @@ const RecordsPage = () => {
                 const isSignificant = discrepancy > 10;
 
                 return (
-                  <tr key={record.plot_id} className="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors">
+                  <motion.tr 
+                    key={record.plot_id}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.05 * (filteredRecords.indexOf(record) % 15) }}
+                    className="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+                  >
                     {/* Plot ID */}
                     <td className="p-2.5 font-mono font-bold text-blue-700 dark:text-blue-400 border-r border-slate-200 dark:border-slate-800 whitespace-nowrap">
                       {record.plot_id}
@@ -239,12 +248,12 @@ const RecordsPage = () => {
                     {/* Tax Status */}
                     <td className="p-2.5 border-r border-slate-200 dark:border-slate-800 whitespace-nowrap">
                       <span
-                        className={`gov-badge ${
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-lg uppercase tracking-wider ${
                           record.tax_status === 'Paid'
-                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-300'
+                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
                             : record.tax_status === 'Pending'
-                            ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border-amber-300'
-                            : 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border-red-300'
+                            ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
+                            : 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border border-red-200 dark:border-red-800'
                         }`}
                       >
                         {record.tax_status}
@@ -282,14 +291,14 @@ const RecordsPage = () => {
                       <button
                         onClick={() => handleDownloadNotice(record.plot_id)}
                         disabled={downloadingId === record.plot_id}
-                        className="gov-btn bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-200"
+                        className="gov-btn bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 hover:bg-slate-200 hover:shadow-sm hover:-translate-y-0.5 transition-all"
                         title="Generate official cadastral inspection notice"
                       >
                         <FileDown size={12} />
                         <span>{downloadingId === record.plot_id ? 'Generating…' : 'Notice'}</span>
                       </button>
                     </td>
-                  </tr>
+                  </motion.tr>
                 );
               })
             )}

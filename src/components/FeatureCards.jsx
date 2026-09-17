@@ -1,5 +1,6 @@
 import React from 'react';
 import { Activity, Network, Scale, Users } from 'lucide-react';
+import AnimateOnScroll from './common/AnimateOnScroll';
 
 const FeatureCards = () => {
   const features = [
@@ -30,42 +31,50 @@ const FeatureCards = () => {
   ];
 
   return (
-    <section id="features" className="py-20 bg-navy-900 dark:bg-slate-950 text-white transition-colors duration-200">
+    <section id="features" className="section-spacing bg-navy-900 dark:bg-slate-950 text-white transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold mb-4">Core Capabilities</h2>
-          <p className="text-lg text-slate-400">
+        <AnimateOnScroll className="text-center max-w-3xl mx-auto mb-14 lg:mb-16">
+          <h2 className="text-3xl lg:text-4xl font-extrabold tracking-tight mb-4">Core Capabilities</h2>
+          <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
             Moving beyond simple map visualization to intelligent, explainable geospatial resolution.
           </p>
-        </div>
+        </AnimateOnScroll>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <AnimateOnScroll
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8"
+          staggerChildren={0.12}
+        >
           {features.map((feature, index) => (
-            <div key={index} className="bg-navy-800 dark:bg-slate-900 border border-navy-700 dark:border-slate-800 p-5 sm:p-8 rounded-xl hover:border-teal-500/50 transition-colors duration-300">
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 rounded-lg bg-navy-900 dark:bg-slate-950 flex items-center justify-center border border-navy-700 dark:border-slate-800 mr-4">
+            <div
+              key={index}
+              className="bg-navy-800/80 dark:bg-slate-900/80 backdrop-blur-sm border border-navy-700/60 dark:border-slate-800/60 p-6 sm:p-10 rounded-2xl hover:border-teal-500/40 hover:-translate-y-1 transition-all duration-300 group"
+            >
+              <div className="flex items-center mb-8">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500/20 to-teal-500/5 border border-teal-500/20 flex items-center justify-center mr-4 group-hover:scale-110 group-hover:shadow-glow-teal transition-all duration-300">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-white">{feature.title}</h3>
+                <h3 className="text-xl font-bold text-white">{feature.title}</h3>
               </div>
               
-              <div className="space-y-4">
-                <div>
-                  <span className="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1 block">What today misses</span>
-                  <p className="text-slate-300 text-sm bg-navy-900/50 dark:bg-slate-950/60 p-3 rounded border border-navy-700/50 dark:border-slate-800">
+              <div className="space-y-5">
+                {/* "What today misses" — subtle left border accent */}
+                <div className="border-l-3 border-l-slate-600/60 pl-4">
+                  <span className="text-[11px] uppercase tracking-wider text-slate-500 font-bold mb-1.5 block">What today misses</span>
+                  <p className="text-slate-400 text-sm leading-relaxed">
                     {feature.today}
                   </p>
                 </div>
-                <div>
-                  <span className="text-xs uppercase tracking-wider text-teal-500 font-semibold mb-1 block">What this adds</span>
-                  <p className="text-slate-100 text-sm bg-teal-900/20 dark:bg-teal-950/40 p-3 rounded border border-teal-800/30 dark:border-teal-700/40">
+                {/* "What this adds" — teal left border accent */}
+                <div className="border-l-3 border-l-teal-500/60 pl-4">
+                  <span className="text-[11px] uppercase tracking-wider text-teal-400 font-bold mb-1.5 block">What this adds</span>
+                  <p className="text-slate-200 text-sm leading-relaxed">
                     {feature.adds}
                   </p>
                 </div>
               </div>
             </div>
           ))}
-        </div>
+        </AnimateOnScroll>
       </div>
     </section>
   );

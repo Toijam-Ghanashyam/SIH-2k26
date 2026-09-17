@@ -52,50 +52,42 @@ const MapPage = () => {
   const activeCount = Object.values(layers).filter(Boolean).length;
 
   return (
-    <div className="flex-1 flex flex-col w-full h-[calc(100vh-140px)] min-h-[680px] bg-[#f0f2f5] dark:bg-[#070e17] overflow-hidden">
-      {/* Sub-Header / GIS Control Bar */}
-      <div className="bg-white dark:bg-[#0c1829] border-b border-slate-300 dark:border-slate-800 px-3 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-2 select-none">
-        <div className="flex items-center gap-3">
+    <div className="flex-1 flex flex-col w-full h-[calc(100vh-80px)] min-h-[680px] bg-[#f0f2f5] dark:bg-[#070e17] overflow-hidden">
+      {/* Compact floating control strip — inside map area */}
+      <div className="bg-white/90 dark:bg-[#0c1829]/90 backdrop-blur-sm border-b border-slate-200/60 dark:border-slate-700/40 px-3 sm:px-5 py-1.5 flex items-center justify-between gap-2 select-none shrink-0">
+        <div className="flex items-center gap-2">
           {/* Mobile layer drawer trigger */}
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-200 text-slate-800 dark:text-slate-200"
+            className="lg:hidden flex items-center gap-1.5 px-2 py-1 text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-slate-700 dark:text-slate-200"
           >
-            <Menu size={14} />
+            <Menu size={13} />
             <span>Layers ({activeCount}/7)</span>
           </button>
 
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-emerald-500 rounded-none inline-block" />
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-              {language === 'hi' ? 'कडस्ट्रल जीआईएस कार्यक्षेत्र' : 'Cadastral GIS Workspace'}
-            </span>
-            <span className="text-slate-400 text-xs hidden sm:inline">•</span>
-            <span className="text-[11px] text-slate-600 dark:text-slate-400 font-mono hidden sm:inline">
-              Tehsil Sadar · Lucknow Division (Circle 4)
-            </span>
-          </div>
+          <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 hidden sm:inline">
+            Tehsil Sadar · Lucknow Division
+          </span>
         </div>
 
-        {/* Status & Inspector Toggle */}
-        <div className="flex items-center gap-2 ml-auto text-xs">
+        <div className="flex items-center gap-2 text-xs">
           {selectedPlotId && (
-            <div className="flex items-center gap-1.5 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 px-2 py-0.5 text-blue-800 dark:text-blue-300 font-mono text-[11px]">
+            <div className="flex items-center gap-1.5 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 px-2 py-0.5 rounded text-blue-800 dark:text-blue-300 font-mono text-[11px]">
               <span>PARCEL: <strong>{selectedPlotId}</strong></span>
               <button
                 onClick={() => setSelectedPlotId(null)}
                 className="hover:text-red-500 ml-1 text-slate-400"
                 title="Deselect Plot"
               >
-                <X size={12} />
+                <X size={11} />
               </button>
             </div>
           )}
 
-          <div className="hidden md:flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400 font-mono border-l border-slate-300 dark:border-slate-700 pl-3">
-            <span>SCALE: 1:2,500</span>
-            <span>•</span>
-            <span>PROJ: WGS84</span>
+          <div className="hidden md:flex items-center gap-2 text-[10px] text-slate-400 dark:text-slate-500 font-mono">
+            <span>1:2,500</span>
+            <span>·</span>
+            <span>WGS84</span>
           </div>
         </div>
       </div>

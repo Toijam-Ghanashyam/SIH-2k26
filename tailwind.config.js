@@ -30,7 +30,38 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['IBM Plex Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'IBM Plex Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        'card': '0 4px 24px rgba(0,0,0,0.06)',
+        'card-lg': '0 8px 40px rgba(0,0,0,0.08)',
+        'glow-teal': '0 0 24px rgba(13,148,136,0.15)',
+        'glow-amber': '0 0 24px rgba(245,158,11,0.15)',
+        'glow-blue': '0 0 24px rgba(59,130,246,0.12)',
+      },
+      keyframes: {
+        'fade-up': {
+          '0%': { opacity: '0', transform: 'translateY(30px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'fade-in-scale': {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { boxShadow: '0 0 8px rgba(13,148,136,0.2)' },
+          '50%': { boxShadow: '0 0 24px rgba(13,148,136,0.4)' },
+        },
+        'shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+      },
+      animation: {
+        'fade-up': 'fade-up 0.6s ease-out forwards',
+        'fade-in-scale': 'fade-in-scale 0.5s ease-out forwards',
+        'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
+        'shimmer': 'shimmer 2s linear infinite',
       },
     },
   },

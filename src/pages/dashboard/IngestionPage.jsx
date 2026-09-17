@@ -13,8 +13,10 @@ import {
   ShieldCheck,
   RefreshCw,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import IngestionHub from '../../components/dashboard/IngestionHub';
 import { useDashboard } from '../../context/DashboardContext';
+import AnimateOnScroll from '../../components/common/AnimateOnScroll';
 
 const AUDIT_LOGS = [
   { id: 'ING-2026-009', layer: 'Drone Orthomosaic (TIF/COG)', size: '248.4 MB', records: '48 Structures', source: 'DJI Matrice 300 RTK Survey', time: '16-Sep-2026 09:15', status: 'Synthesized', checksum: 'a8f3b92c...e41d' },
@@ -70,8 +72,8 @@ const IngestionPage = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Upload Console */}
-        <div className="lg:col-span-1 space-y-4">
-          <div className="gov-box p-4 bg-white dark:bg-[#0c1829]">
+        <AnimateOnScroll className="lg:col-span-1 space-y-4" staggerChildren={0.1}>
+          <div className="gov-box p-4 bg-white/80 dark:bg-[#0c1829]/80 backdrop-blur-sm shadow-sm border border-slate-200/60 dark:border-slate-700/50">
             <div className="border-b border-slate-300 dark:border-slate-800 pb-2 mb-4">
               <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
                 <HardDrive size={15} className="text-gov-navy dark:text-teal-400" />
@@ -93,7 +95,7 @@ const IngestionPage = () => {
           </div>
 
           {/* Supported Format Specifications */}
-          <div className="gov-box p-4 bg-slate-50 dark:bg-slate-900 text-xs text-slate-600 dark:text-slate-400 space-y-2">
+          <div className="gov-box p-4 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-sm text-xs text-slate-600 dark:text-slate-400 space-y-2 border border-slate-200/60 dark:border-slate-700/50">
             <h3 className="font-bold text-slate-800 dark:text-slate-200 uppercase text-[11px]">
               DoLR Ingestion Specifications (PS26013)
             </h3>
@@ -104,12 +106,12 @@ const IngestionPage = () => {
               <li><strong>STAC Standard:</strong> STAC API v1.0.0 compliance with spatio-temporal cataloging.</li>
             </ul>
           </div>
-        </div>
+        </AnimateOnScroll>
 
         {/* Right Column: Ingestion Log & Provenance Audit */}
-        <div className="lg:col-span-2 space-y-4">
+        <AnimateOnScroll className="lg:col-span-2 space-y-4" staggerChildren={0.1} delay={0.2}>
           {/* Provenance Audit Table */}
-          <div className="gov-box">
+          <div className="gov-box shadow-sm border border-slate-200/60 dark:border-slate-700/50 overflow-hidden">
             <div className="p-3 bg-slate-100 dark:bg-slate-800 border-b border-slate-300 dark:border-slate-700 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Database size={15} className="text-gov-navy dark:text-teal-400" />
@@ -136,7 +138,13 @@ const IngestionPage = () => {
                 </thead>
                 <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                   {AUDIT_LOGS.map((log) => (
-                    <tr key={log.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <motion.tr 
+                      key={log.id}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: 0.05 * AUDIT_LOGS.indexOf(log) }}
+                      className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                    >
                       <td className="p-2.5 font-mono font-bold text-slate-700 dark:text-slate-300 border-r border-slate-200 dark:border-slate-800 whitespace-nowrap">
                         {log.id}
                       </td>
@@ -153,12 +161,12 @@ const IngestionPage = () => {
                         {log.time}
                       </td>
                       <td className="p-2.5 whitespace-nowrap">
-                        <span className="gov-badge bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border-emerald-300">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-semibold rounded-lg uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 transition-colors">
                           <CheckCircle2 size={10} />
                           {log.status}
                         </span>
                       </td>
-                    </tr>
+                    </motion.tr>
                   ))}
                 </tbody>
               </table>
@@ -166,7 +174,7 @@ const IngestionPage = () => {
           </div>
 
           {/* STAC Catalog Live Node Status */}
-          <div className="gov-box p-4 bg-white dark:bg-[#0c1829] space-y-3">
+          <div className="gov-box p-4 bg-white/80 dark:bg-[#0c1829]/80 backdrop-blur-sm shadow-sm space-y-3 border border-slate-200/60 dark:border-slate-700/50">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
               <div className="flex items-center gap-2">
                 <Server size={16} className="text-gov-navy dark:text-teal-400" />
@@ -174,8 +182,9 @@ const IngestionPage = () => {
                   Active Geospatial Feed Connectors
                 </h3>
               </div>
-              <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
-                ● 4 ENDPOINTS ONLINE
+              <span className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
+                4 ENDPOINTS ONLINE
               </span>
             </div>
 
@@ -197,7 +206,7 @@ const IngestionPage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </AnimateOnScroll>
       </div>
     </div>
   );

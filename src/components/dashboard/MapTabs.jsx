@@ -3,6 +3,9 @@ import { Map, Cuboid, Clock } from 'lucide-react';
 
 /**
  * MapTabs — 3-tab wrapper around the existing MapView and two new views.
+ * Tabs are now a floating overlay pill in the top-right of the map viewport
+ * to maximize vertical content space.
+ *
  * Tab 1: "2D GIS Integration View" (existing MapView, unchanged)
  * Tab 2: "3D Elevation Inspector (DSM)"
  * Tab 3: "Temporal Change Detection"
@@ -16,9 +19,9 @@ import ElevationView from './ElevationView';
 import TemporalCompareView from './TemporalCompareView';
 
 const TABS = [
-  { id: '2d', label: '2D GIS Integration View', shortLabel: '2D View', icon: Map },
-  { id: '3d', label: '3D Elevation Inspector (DSM)', shortLabel: '3D Elevation', icon: Cuboid },
-  { id: 'temporal', label: 'Temporal Change Detection', shortLabel: 'Temporal Change', icon: Clock },
+  { id: '2d', label: '2D View', icon: Map },
+  { id: '3d', label: '3D DSM', icon: Cuboid },
+  { id: 'temporal', label: 'Temporal', icon: Clock },
 ];
 
 const MapTabs = ({ mapProps }) => {
@@ -26,8 +29,8 @@ const MapTabs = ({ mapProps }) => {
 
   return (
     <div className="flex flex-col h-full w-full relative">
-      {/* Tab bar */}
-      <div className="flex border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-none overflow-x-auto scrollbar-none transition-colors shrink-0 z-10">
+      {/* Floating tab pills — overlaid on top-right of map */}
+      <div className="absolute top-3 right-3 z-[500] flex bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-xl border border-slate-200/60 dark:border-slate-700/50 shadow-lg overflow-hidden">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -35,23 +38,20 @@ const MapTabs = ({ mapProps }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-semibold whitespace-nowrap border-b-2 transition-all flex-1 sm:flex-initial justify-center ${
+              className={`flex items-center gap-1.5 px-3 py-2 text-[11px] font-semibold whitespace-nowrap transition-all ${
                 isActive
-                  ? 'border-gov-navy dark:border-teal-400 text-gov-navy dark:text-teal-400 bg-slate-50 dark:bg-slate-800/80 font-bold'
-                  : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                  ? 'bg-gov-navy dark:bg-teal-600 text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
             >
-              <Icon size={14} className="shrink-0" />
-              <span>
-                <span className="hidden sm:inline">{tab.label}</span>
-                <span className="sm:hidden">{tab.shortLabel}</span>
-              </span>
+              <Icon size={13} className="shrink-0" />
+              <span>{tab.label}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Tab content */}
+      {/* Tab content — takes full height */}
       <div className="flex-1 w-full h-full relative min-h-[520px]">
         {activeTab === '2d' && <MapView {...mapProps} />}
         {activeTab === '3d' && <ElevationView />}
